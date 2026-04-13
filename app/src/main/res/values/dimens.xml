@@ -1,0 +1,49 @@
+<resources>
+
+    <dimen name="zeroMargin">0dp</dimen>
+    <!-- button dimen -->
+
+    <dimen name="constrain_margin">10dp</dimen>
+    <dimen name="constrain_padding">10dp</dimen>
+
+    <!-- Margins -->
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+
+    <!-- Padding -->
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">12dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="text_medium">16sp</dimen>
+    <dimen name="text_large">20sp</dimen>
+
+    <!-- Button -->
+    <dimen name="button_textSize">15sp</dimen>
+    <dimen name="button_height">30dp</dimen>
+    <dimen name="button_radius">12dp</dimen>
+
+
+    <!-- TexField  Outlined -->
+    <dimen name="text_field_border_radius">12dp</dimen>
+    <dimen name="hint_text_size">16sp</dimen>
+
+    <dimen name="edit_text_size">14sp</dimen>
+
+    <!-- textButton -->
+    <dimen name="text_button_margin">0dp</dimen>
+    <dimen name="defaultTextSize">16sp</dimen>
+
+    <!-- FragmentLogin -->
+    <dimen name="fragmentLoginTextSize">20sp</dimen>
+    <dimen name="loginMarginTop">10dp</dimen>
+    <dimen name="loginCardTopOffset">120dp</dimen>
+    <dimen name="padding">10dp</dimen>
+    <dimen name="zeroRadius">0dp</dimen>
+    <dimen name="topRightLeftRadius">10dp</dimen>
+
+
+</resources>
