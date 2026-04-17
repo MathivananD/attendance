@@ -47,8 +47,6 @@
 
 
     <style name="MyTextInputText">
-
-        <item name="android:textSize">@dimen/edit_text_size</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/saira</item>
 

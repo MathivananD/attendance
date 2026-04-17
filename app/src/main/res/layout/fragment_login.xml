@@ -6,13 +6,47 @@
     android:background="@color/primary"
     android:padding="@dimen/zeroMargin">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="260dp"
+        android:src="@drawable/sign_up_home"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding_12"
+        android:text="Login In"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_22"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:textSize="@dimen/text_size_22"
+        android:paddingStart="@dimen/padding_12"
+        android:text="Enter username and password"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/loginView"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
         android:id="@+id/loginView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/constrain_padding"
         android:background="@drawable/login_card_style"
         android:orientation="vertical"
+        android:padding="@dimen/constrain_padding"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
