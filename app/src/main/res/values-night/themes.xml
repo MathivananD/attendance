@@ -3,5 +3,8 @@
     <style name="Base.Theme.Attendence" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="textInputStyle">@style/myTextField</item>
+        <item name="materialButtonStyle">@style/myButton</item>
+        <item name="android:textViewStyle">@style/MyTextView</item>
     </style>
 </resources>

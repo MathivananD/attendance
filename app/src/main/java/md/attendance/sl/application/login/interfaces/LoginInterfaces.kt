@@ -13,8 +13,8 @@ interface LoginInterfaces {
 
   fun login(userName: String, password: String): Flow<String>
 
-    fun logOut(): Flow<Unit>
+  fun logOut(): Flow<Unit>
 
-    fun isSessionValid(token: String): Flow<Boolean>
+  fun isSessionValid(token: String): Flow<Boolean>
 
 }

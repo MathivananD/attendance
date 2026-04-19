@@ -10,26 +10,20 @@ import android.view.WindowManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.navigation.fragment.findNavController
+import md.attendance.sl.databinding.FragmentSignUpBinding
+import kotlin.math.max
 
 class SignUpFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SignUpFragment()
-    }
-
-    private val viewModel: SignUpViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
+   lateinit var binding: FragmentSignUpBinding;
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+        binding= FragmentSignUpBinding.inflate(inflater,container,false);
+        return binding.root
     }
 
     override fun onResume() {
@@ -49,21 +43,19 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 'view' here is your ScrollView (the root of your fragment)
-        // We want to apply padding to the ConstraintLayout inside it
-        val container = view.findViewById<View>(R.id.signUpContainer) // Add an ID to your ConstraintLayout
+        val initialBottomPadding = view.paddingBottom
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
-            // Get the height of the keyboard (ime) and the system bars (navigation bar)
-            val insets = windowInsets.getInsets(
-                WindowInsetsCompat.Type.ime() or WindowInsetsCompat.Type.systemBars()
-            )
+            val imeBottom = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            val systemBarsBottom = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
 
-            // Apply the bottom inset as padding to your inner layout
-            // This ensures the last button is always above the keyboard/nav bar
-            v.updatePadding(bottom = insets.bottom)
+            v.updatePadding(bottom = initialBottomPadding + max(imeBottom, systemBarsBottom))
 
             windowInsets
+        }
+
+        binding.signUpButton.setOnClickListener { it->
+            findNavController().navigate(R.id.homeFragment, )
         }
     }
 }

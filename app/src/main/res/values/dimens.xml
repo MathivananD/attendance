@@ -30,6 +30,17 @@
     <dimen name="padding_24">24dp</dimen>
     <dimen name="padding_26">26dp</dimen>
 
+
+    <dimen name="radius_5">5dp</dimen>
+    <dimen name="radius_7">7dp</dimen>
+    <dimen name="radius_8">8dp</dimen>
+    <dimen name="radius_10">10dp</dimen>
+    <dimen name="radius_12">12dp</dimen>
+    <dimen name="radius_14">14dp</dimen>
+    <dimen name="radius_16">16dp</dimen>
+    <dimen name="radius_18">18dp</dimen>
+    <dimen name="radius_20">20dp</dimen>
+
     <!-- Text Sizes -->
     <dimen name="text_small">12sp</dimen>
     <dimen name="text_medium">16sp</dimen>
@@ -68,6 +79,11 @@
     <dimen name="text_size_24">24sp</dimen>
     <dimen name="text_size_26">26sp</dimen>
     <dimen name="text_size_28">28sp</dimen>
+
+
+    <dimen name="spacing_12">12sp</dimen>
+    <dimen name="spacing_14">14sp</dimen>
+    <dimen name="spacing_16">16sp</dimen>
 
 
 </resources>

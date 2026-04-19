@@ -6,9 +6,10 @@
         <item name="textInputStyle">@style/myTextField</item>
         <item name="materialButtonStyle">@style/myButton</item>
         <item name="android:textViewStyle">@style/MyTextView</item>
-
+        <item name="editTextStyle">@style/MyEditText</item>
         <!-- MUST ADD -->
 <!--        <item name="android:windowSoftInputMode">adjustResize</item>-->
+
 
         <!-- Optional but safe -->
 
@@ -19,6 +20,8 @@
         <!-- Border -->
         <item name="boxStrokeColor">@color/primary</item>
         <item name="boxStrokeWidth">2dp</item>
+
+        <item name="boxBackgroundMode">outline</item>
 
         <!-- Background -->
         <item name="boxBackgroundColor">@color/white</item>
@@ -33,6 +36,7 @@
         <item name="hintTextColor">@color/accent</item>
         <item name="hintTextAppearance">@style/HintLargeStyle</item>
         <item name="android:textAppearance">@style/MyTextInputText</item>
+
 
     </style>
 
@@ -49,9 +53,16 @@
     <style name="MyTextInputText">
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/saira</item>
+        <item name="android:background">@null</item>
 
     </style>
+    <style name="MyEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
 
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="background">@null</item>
+
+    </style>
     <style name="myButton" parent="Widget.Material3.Button">
         <item name="backgroundTint">@color/primary</item>
         <item name="android:textSize">@dimen/button_textSize</item>
@@ -83,5 +94,9 @@
         <item name="android:fontFamily">@font/saira</item>
         <item name="android:textFontWeight">500</item>
 
+    </style>
+    <style name="CircleImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 </resources>

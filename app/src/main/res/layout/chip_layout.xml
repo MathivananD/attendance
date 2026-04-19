@@ -1,0 +1,18 @@
+<com.google.android.material.chip.Chip
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/chip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/zeroMargin"
+    android:padding="@dimen/zeroMargin"
+    android:checkable="true"
+    android:clickable="true"
+    android:minHeight="@dimen/zeroMargin"
+    android:text="Today"
+    app:chipStrokeColor="@color/transparent"
+    android:textColor="@color/chip_text_selector"
+    app:chipBackgroundColor="@color/chip_bg_selector"
+    app:chipStrokeWidth="1dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/checkInOutView" />

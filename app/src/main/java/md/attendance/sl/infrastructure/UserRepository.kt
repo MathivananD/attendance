@@ -3,22 +3,15 @@ package md.attendance.sl.infrastructure
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import jakarta.inject.Inject
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import md.attendance.sl.application.login.interfaces.LoginInterfaces
-import md.attendance.sl.data.SessionManager
 import md.attendance.sl.data.UserDao
 import md.attendance.sl.data.UserDatabase
 import md.attendance.sl.data.UserEntity
 
-
-class LoginRepository @Inject constructor(
-    val userDao: UserDao,
-    val sessionManager: SessionManager,
-) : LoginInterfaces {
+class UserRepository(application: Application) : LoginInterfaces {
     override fun login(
         userName: String,
         password: String,
@@ -34,6 +27,7 @@ class LoginRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    private val userDao: UserDao = UserDatabase.getDatabase(application).userDao()
     var allUsers: LiveData<List<UserEntity>> = liveData { }
 
     suspend fun getAllUser() {
