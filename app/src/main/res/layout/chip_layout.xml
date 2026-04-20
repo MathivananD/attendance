@@ -10,6 +10,7 @@
     android:clickable="true"
     android:minHeight="@dimen/zeroMargin"
     android:text="Today"
+    app:chipSurfaceColor="@android:color/transparent"
     app:chipStrokeColor="@color/transparent"
     android:textColor="@color/chip_text_selector"
     app:chipBackgroundColor="@color/chip_bg_selector"

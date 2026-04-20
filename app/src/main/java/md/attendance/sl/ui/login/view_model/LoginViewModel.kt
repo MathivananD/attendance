@@ -18,7 +18,7 @@ sealed class LoginState {
 }
 
 
-class LoginViewModel(val loginUserCase: LoginUserCase) : ViewModel() {
+class LoginViewModel() : ViewModel() {
 
 
     private val _loginState = MutableLiveData<LoginState>(LoginState.Idle)
@@ -48,5 +48,9 @@ class LoginViewModel(val loginUserCase: LoginUserCase) : ViewModel() {
                 _loginState.value = LoginState.Error("Something went wrong")
             }
         }
+    }
+
+    fun reset(){
+        _loginState.value = LoginState.Idle
     }
 }

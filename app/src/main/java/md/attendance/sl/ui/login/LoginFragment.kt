@@ -43,10 +43,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun setUpButtonClickListener() {
         binding.loginButton.setOnClickListener {
+            Log.d("fffffffffff", "login button clicked")
             val username = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
             viewModel.login(username, password)
 
+        }
+        binding.signUpText.setOnClickListener {
+            findNavController().navigate(R.id.signUpFragment, )
         }
     }
 
@@ -80,6 +84,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
 
                 is LoginState.Error -> {
+                    Log.d("wwwwwwwwwwwwwwww", "login button clicked")
+                    viewModel.reset()
+                    findNavController().navigate(R.id.homeFragment, )
                     Toast.makeText(context, state.error, Toast.LENGTH_LONG).show()
                 }
 
