@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import md.attendance.sl.application.login.LoginUserCase
+import javax.inject.Inject
 
 
 sealed class LoginState {
@@ -17,8 +19,11 @@ sealed class LoginState {
     data class Error(val error: String) : LoginState()
 }
 
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val userCase: LoginUserCase
 
-class LoginViewModel() : ViewModel() {
+) : ViewModel() {
 
 
     private val _loginState = MutableLiveData<LoginState>(LoginState.Idle)

@@ -15,11 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 import md.attendance.sl.R
 import md.attendance.sl.databinding.FragmentLoginBinding
 import md.attendance.sl.ui.login.view_model.LoginState
 import md.attendance.sl.ui.login.view_model.LoginViewModel
 
+@AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
     lateinit var binding: FragmentLoginBinding;
     val viewModel: LoginViewModel by viewModels()

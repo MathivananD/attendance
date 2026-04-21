@@ -3,7 +3,6 @@ package md.attendance.sl.infrastructure
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +14,7 @@ import md.attendance.sl.data.UserDatabase
 import md.attendance.sl.data.UserEntity
 
 
-class LoginRepository @Inject constructor(
+class LoginRepository (
     val userDao: UserDao,
     val sessionManager: SessionManager,
 ) : LoginInterfaces {

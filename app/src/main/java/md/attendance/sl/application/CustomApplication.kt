@@ -1,4 +1,7 @@
 package md.attendance.sl.application
 
-class CustomApplication {
-}
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class CustomApplication : Application()

@@ -26,6 +26,6 @@ interface UserDao {
     suspend fun getUserByUserNameAndPassword(email: String, password: String): UserEntity?
 
     @Query("SELECT * FROM user_table")
-    suspend fun getAllUsers(): LiveData<List<UserEntity>>
+     fun getAllUsers(): LiveData<List<UserEntity>>
 
 }
