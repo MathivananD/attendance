@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import md.attendance.sl.application.login.LoginUserCase
+import md.attendance.sl.application.login.interfaces.LoginInterfaces
 import javax.inject.Inject
 
 
@@ -15,7 +17,7 @@ sealed class LoginState {
     object Idle : LoginState()
     object Loading : LoginState()
     data class Success(val message: String) : LoginState()
-    data class FieldError(var userName: String?,var password: String?) : LoginState()
+    data class FieldError(var userName: String?, var password: String?) : LoginState()
     data class Error(val error: String) : LoginState()
 }
 
@@ -32,30 +34,55 @@ class LoginViewModel @Inject constructor(
     fun login(username: String, password: String) {
 
         if (username.isEmpty() || password.isEmpty()) {
-            _loginState.value = LoginState.FieldError(if(username.isEmpty())"Enter username" else null,if(password.isEmpty())"Enter password" else null)
+            _loginState.value = LoginState.FieldError(
+                if (username.isEmpty()) "Enter username" else null,
+                if (password.isEmpty()) "Enter password" else null
+            )
             return
         }
+        proceedLogin(username, password);
 
+    }
 
+    fun proceedLogin(username: String, password: String) {
         viewModelScope.launch {
             _loginState.value = LoginState.Loading
 
             try {
-                delay(1500) // simulate API
 
-                if (username == "admin" && password == "1234") {
+                userCase(username, password).catch { e ->
+                    when (e) {
+                        is LoginInterfaces.Exceptions.UserNameNotFound -> {
+                            _loginState.value = LoginState.FieldError(
+                                userName = e.message,
+                                password = null
+                            )
+                        }
+
+                        is LoginInterfaces.Exceptions.PasswordIncorrect -> {
+                            _loginState.value = LoginState.FieldError(
+                                userName = null,
+                                password = e.message
+                            )
+                        }
+
+                        else -> {
+                            _loginState.value =
+                                LoginState.Error(e.message ?: "Something went wrong")
+                        }
+                    }
+                }.collect {
                     _loginState.value = LoginState.Success("Login successful")
-                } else {
-                    _loginState.value = LoginState.Error("Invalid credentials")
                 }
 
+
             } catch (e: Exception) {
-                _loginState.value = LoginState.Error("Something went wrong")
+                _loginState.value = LoginState.Error(e.message ?: "Something went wrong")
             }
         }
     }
 
-    fun reset(){
+    fun reset() {
         _loginState.value = LoginState.Idle
     }
 }

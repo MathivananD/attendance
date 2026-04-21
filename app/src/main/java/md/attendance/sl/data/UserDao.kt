@@ -11,7 +11,7 @@ import androidx.room.Update
 interface UserDao {
 
     @Insert
-    suspend fun insertUser(user: UserEntity)
+    suspend fun insertUser(user: UserEntity): Long
 
     @Update
     suspend fun updateUser(user: UserEntity)
@@ -24,6 +24,9 @@ interface UserDao {
 
     @Query("SELECT * FROM user_table WHERE email = :email And password = :password")
     suspend fun getUserByUserNameAndPassword(email: String, password: String): UserEntity?
+
+    @Query("SELECT * FROM user_table WHERE email = :email Limit 1")
+    suspend fun getUserByName(email: String): UserEntity?
 
     @Query("SELECT * FROM user_table")
      fun getAllUsers(): LiveData<List<UserEntity>>

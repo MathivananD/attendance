@@ -10,9 +10,10 @@ import md.attendance.sl.data.SessionManager
 import md.attendance.sl.data.UserDao
 import md.attendance.sl.data.UserDatabase
 import md.attendance.sl.infrastructure.LoginRepository
-import md.attendance.sl.infrastructure.UserRepository
+import md.attendance.sl.infrastructure.SignUpRepository
 import javax.inject.Singleton
 import md.attendance.sl.application.login.interfaces.LoginInterfaces
+import md.attendance.sl.infrastructure.validators.UserValidator
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -25,8 +26,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun getUserRepository(app: Application): UserRepository {
-        return UserRepository(app);
+    fun getUserRepository(userDao: UserDao, sessionManager: SessionManager,userValidator: UserValidator): SignUpRepository {
+        return SignUpRepository(userDao, sessionManager,userValidator);
     }
 
     @Provides
@@ -43,8 +44,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun getLoginUseCase(loginRepository: LoginInterfaces, sessionManager: SessionManager): LoginUserCase {
-        return LoginUserCase(loginRepository, sessionManager);
+    fun getLoginUseCase(
+        loginRepository: LoginInterfaces,
+        sessionManager: SessionManager
+    ): LoginUserCase {
+        return LoginUserCase(loginRepository);
+    }
+
+    @Provides
+    @Singleton
+    fun getUserValidator(): UserValidator {
+        return UserValidator();
     }
 }
 

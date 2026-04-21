@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="md.attendance.sl.SignUpFragment"
+        android:name="md.attendance.sl.ui.sign_up.SignUpFragment"
         android:label="fragment_home_screen"
         tools:layout="@layout/fragment_sign_up" >
         <action

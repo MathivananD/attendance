@@ -7,11 +7,13 @@ interface LoginInterfaces {
     sealed class Exceptions(msg: String): Exception(msg){
 
         class NoNetWorkException: Exceptions("Internet not available")
-        class CredentialIncorrect: Exceptions("User name or password id incorrect")
+        class UserNameNotFound: Exceptions("UserName not found")
+        class PasswordIncorrect: Exceptions("password is incorrect")
         class CustomError(msg: String?): Exceptions(msg?:"Something went wrong")
+
     }
 
-  fun login(userName: String, password: String): Flow<String>
+  fun login(userName: String, password: String): Flow<Boolean>
 
   fun logOut(): Flow<Unit>
 

@@ -1,59 +1,45 @@
 package md.attendance.sl.infrastructure
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import md.attendance.sl.application.login.interfaces.LoginInterfaces
 import md.attendance.sl.data.SessionManager
 import md.attendance.sl.data.UserDao
-import md.attendance.sl.data.UserDatabase
 import md.attendance.sl.data.UserEntity
+import javax.inject.Inject
 
 
-class LoginRepository (
+class LoginRepository @Inject constructor(
     val userDao: UserDao,
     val sessionManager: SessionManager,
 ) : LoginInterfaces {
     override fun login(
         userName: String,
         password: String,
-    ): Flow<String> {
-        TODO("Not yet implemented")
-    }
-
-    override fun logOut(): Flow<Unit> {
-        TODO("Not yet implemented")
-    }
-
-    override fun isSessionValid(token: String): Flow<Boolean> {
-        TODO("Not yet implemented")
-    }
-
-    var allUsers: LiveData<List<UserEntity>> = liveData { }
-
-    suspend fun getAllUser() {
-        allUsers = userDao.getAllUsers()
-    }
-
-    suspend fun insert(user: UserEntity) {
-        withContext(Dispatchers.IO) {
-            userDao.insertUser(user)
+    ): Flow<Boolean> = flow {
+        val user =
+            userDao.getUserByName(userName) ?: throw LoginInterfaces.Exceptions.UserNameNotFound()
+        if (user.password != password) {
+            throw LoginInterfaces.Exceptions.PasswordIncorrect()
         }
+        sessionManager.saveLogin(user.id)
+        emit(true)
+
+    }.flowOn(Dispatchers.IO)
+
+    override fun logOut(): Flow<Unit> = flow {
+        sessionManager.logout()
+        emit(Unit)
     }
 
-    suspend fun update(user: UserEntity) {
-        withContext(Dispatchers.IO) {
-            userDao.updateUser(user)
-        }
+    override fun isSessionValid(token: String): Flow<Boolean> = flow {
+        emit(sessionManager.isLoggedIn())
     }
 
-    suspend fun delete(user: UserEntity) {
-        withContext(Dispatchers.IO) {
-            userDao.deleteUser(user)
-        }
-    }
+
 }

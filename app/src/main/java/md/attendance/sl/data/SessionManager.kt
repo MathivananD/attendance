@@ -12,10 +12,10 @@ class SessionManager(context: Context) {
         private const val KEY_USERNAME = "username"
     }
 
-    fun saveLogin(username: String) {
+    fun saveLogin(username: Int) {
         prefs.edit().apply {
             putBoolean(KEY_IS_LOGGED_IN, true)
-            putString(KEY_USERNAME, username)
+            putInt(KEY_USERNAME, username)
             apply()
         }
     }
