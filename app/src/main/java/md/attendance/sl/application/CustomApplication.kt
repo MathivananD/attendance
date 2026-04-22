@@ -1,7 +1,16 @@
 package md.attendance.sl.application
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class CustomApplication : Application()
+class CustomApplication : Application(){
+    override fun onCreate() {
+        super.onCreate()
+
+        AppCompatDelegate.setDefaultNightMode(
+            AppCompatDelegate.MODE_NIGHT_NO   // ☀️ Always Light
+        )
+    }
+}

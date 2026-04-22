@@ -3,8 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashScreen">
+    <fragment
+        android:id="@+id/splashScreen"
+        android:name="md.attendance.sl.ui.SplashScreen"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_splash_screen" >
 
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="md.attendance.sl.ui.login.LoginFragment"

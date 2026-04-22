@@ -13,10 +13,9 @@ class SessionManager(context: Context) {
     }
 
     fun saveLogin(username: Int) {
-        prefs.edit().apply {
+        prefs.edit(commit = true) {
             putBoolean(KEY_IS_LOGGED_IN, true)
             putInt(KEY_USERNAME, username)
-            apply()
         }
     }
 
@@ -24,11 +23,11 @@ class SessionManager(context: Context) {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
     }
 
-    fun getUsername(): String? {
-        return prefs.getString(KEY_USERNAME, null)
-    }
 
     fun logout() {
-        prefs.edit { clear() }
+        prefs.edit(commit = true) {
+            putBoolean(KEY_IS_LOGGED_IN, false)
+            putInt(KEY_USERNAME, -1)
+        }
     }
 }

@@ -5,25 +5,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import md.attendance.sl.data.SessionManager
 import md.attendance.sl.R
 import md.attendance.sl.custom_components.GridSpacingItemDecoration
 import md.attendance.sl.custom_components.HorizontalSpaceItemDecoration
 import md.attendance.sl.databinding.FragmentHomeScreenBinding
+import md.attendance.sl.di.Extension.applySafeArea
 import md.attendance.sl.ui.home.list.ChipRecycleView
 import md.attendance.sl.ui.home.list.GridAdapter
+import md.attendance.sl.ui.login.view_model.LoginViewModel
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class HomeScreen : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+     val viewModel: LoginViewModel by viewModels()
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     private var binding: FragmentHomeScreenBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
     }
 
@@ -39,7 +47,7 @@ class HomeScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding!!.root.applySafeArea()
         val chipList = listOf("Today", "Weekly", "Monthly")
 
         binding!!.chipRecyclerView.apply {
@@ -69,6 +77,16 @@ class HomeScreen : Fragment() {
         binding!!.gridRecyclerView.addItemDecoration(
             GridSpacingItemDecoration(4, spacing, false)
         )
+        binding!!.logOut.setOnClickListener {
+            sessionManager.logout()
+            findNavController().navigate(
+                R.id.loginFragment,
+                null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.my_nav, true)
+                    .build()
+            )
+        }
     }
 
     companion object {

@@ -17,8 +17,10 @@ class LoginUserCase @Inject constructor(
         return loginRepository.login(userName, password)
     }
 
-    operator fun invoke(): Flow<Unit> {
+     fun logOut(): Flow<Unit> {
+
         return loginRepository.logOut();
     }
+
 
 }

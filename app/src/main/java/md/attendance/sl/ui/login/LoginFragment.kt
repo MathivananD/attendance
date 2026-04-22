@@ -82,13 +82,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
 
                 is LoginState.Success -> {
-                    // navigate to home
+                    findNavController().navigate(R.id.homeFragment, )
                 }
 
                 is LoginState.Error -> {
                     Log.d("wwwwwwwwwwwwwwww", "login button clicked")
                     viewModel.reset()
-                    findNavController().navigate(R.id.homeFragment, )
+
                     Toast.makeText(context, state.error, Toast.LENGTH_LONG).show()
                 }
 

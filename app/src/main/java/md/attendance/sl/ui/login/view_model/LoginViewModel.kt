@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import md.attendance.sl.application.login.LoginUserCase
 import md.attendance.sl.application.login.interfaces.LoginInterfaces
@@ -23,8 +25,7 @@ sealed class LoginState {
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userCase: LoginUserCase
-
+    private val userCase: LoginUserCase,
 ) : ViewModel() {
 
 
@@ -85,4 +86,6 @@ class LoginViewModel @Inject constructor(
     fun reset() {
         _loginState.value = LoginState.Idle
     }
+
+    fun logOut(): Flow<Boolean> = userCase.logOut().map { true }
 }
