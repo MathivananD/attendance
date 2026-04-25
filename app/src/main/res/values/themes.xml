@@ -1,7 +1,11 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.Attendence" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.Attendence" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="textInputStyle">@style/myTextField</item>
@@ -50,13 +54,13 @@
     </style>
 
 
-
     <style name="MyTextInputText">
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/saira</item>
         <item name="android:background">@null</item>
 
     </style>
+
     <style name="MyEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
 
         <item name="android:textColor">@color/black</item>
@@ -64,6 +68,7 @@
         <item name="background">@null</item>
 
     </style>
+
     <style name="myButton" parent="Widget.Material3.Button">
         <item name="backgroundTint">@color/primary</item>
         <item name="android:textSize">@dimen/button_textSize</item>
@@ -96,6 +101,7 @@
         <item name="android:textFontWeight">500</item>
 
     </style>
+
     <style name="CircleImage">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

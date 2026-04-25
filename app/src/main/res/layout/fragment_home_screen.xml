@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Hello this from luggy"
+        android:text="@string/userNameText"
         app:layout_constraintStart_toEndOf="@id/profileImage"
 
         app:layout_constraintTop_toTopOf="@id/profileImage" />
@@ -34,13 +34,15 @@
         android:id="@+id/userDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is the description"
+        android:text="Welcome to the gulu gulu"
         app:layout_constraintBottom_toBottomOf="@id/profileImage"
         app:layout_constraintStart_toStartOf="@id/userName"
 
         app:layout_constraintTop_toBottomOf="@id/userName" />
 
     <ImageButton
+        android:elevation="4dp"
+
         android:id="@+id/imageButton2"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -62,7 +64,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileImage" />

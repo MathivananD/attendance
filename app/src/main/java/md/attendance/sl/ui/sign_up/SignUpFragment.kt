@@ -1,14 +1,22 @@
 package md.attendance.sl.ui.sign_up
 
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
+import androidx.core.view.doOnLayout
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,8 +25,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import md.attendance.sl.R
 import md.attendance.sl.data.UserEntity
 import md.attendance.sl.databinding.FragmentSignUpBinding
-import md.attendance.sl.ui.login.view_model.LoginState
-import md.attendance.sl.ui.login.view_model.LoginViewModel
+import md.attendance.sl.di.Extension.applySafeArea
+import md.attendance.sl.di.Extension.setupToolbar
 import kotlin.getValue
 import kotlin.math.max
 
@@ -36,35 +44,19 @@ class SignUpFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        requireActivity().window.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-        )
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // Reset to default when leaving the fragment so it doesn't affect other screens
-        requireActivity().window.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val initialBottomPadding = view.paddingBottom
+        setupToolbar(binding.toolbarLayout.toolbar, "Sign Up", true)
 
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
-            val imeBottom = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-            val systemBarsBottom =
-                windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
 
-            v.updatePadding(bottom = initialBottomPadding + max(imeBottom, systemBarsBottom))
-
-            windowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.signUpScrollView) { v, insets ->
+            val imeInset = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            val navInset = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            v.updatePadding(bottom = maxOf(imeInset, navInset))
+            insets
         }
+
 
         binding.signUpButton.setOnClickListener { it ->
             val userEntity = UserEntity(

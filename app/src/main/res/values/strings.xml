@@ -13,4 +13,5 @@
     <string name="mobileNumber">Mobile Number</string>
     <string name="enterPassword">Enter password</string>
     <string name="acceptTerms">Accept Terms and Conditions</string>
+    <string name="userNameText">YO✋ %1$s !!</string>
 </resources>

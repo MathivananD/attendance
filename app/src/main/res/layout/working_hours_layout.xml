@@ -6,6 +6,7 @@
     android:background="@drawable/working_hours_background"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+
     android:padding="10dp">
 
     <ImageView
@@ -20,7 +21,10 @@
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_14"
+        android:fontFamily="@font/saira_regular"
         android:layout_marginStart="6dp"
-        android:text="Jan 23, 08:00 - 17:00" />
+         />
 
 </LinearLayout>

@@ -23,6 +23,10 @@ class SessionManager(context: Context) {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
     }
 
+    fun getCurrentId(): Int {
+        return prefs.getInt(KEY_USERNAME,-1)
+    }
+
 
     fun logout() {
         prefs.edit(commit = true) {

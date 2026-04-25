@@ -27,6 +27,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     val viewModel: LoginViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val initialTopPadding = view.paddingTop
+        val initialBottomPadding = view.paddingBottom
+
         ViewCompat.setOnApplyWindowInsetsListener(requireView()) { view, insets ->
 
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
