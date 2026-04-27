@@ -24,11 +24,11 @@ class HistoryRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getHistoryById(id: Int):  Flow<HistoryEntity>? {
+    override suspend fun getHistoryById(id: Int):  Flow<HistoryEntity?> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getHistoryByDate(date: String,id: Int):  Flow<HistoryEntity>? {
+    override suspend fun getHistoryByDate(date: String,id: Int):  Flow<HistoryEntity?> {
         TODO("Not yet implemented")
     }
 
