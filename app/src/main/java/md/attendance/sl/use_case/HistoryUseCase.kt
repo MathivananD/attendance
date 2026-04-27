@@ -1,6 +1,7 @@
 package md.attendance.sl.use_case
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import md.attendance.sl.application.history.HistoryInterface
 import md.attendance.sl.data.SessionManager
 import md.attendance.sl.data.history.HistoryEntity
@@ -25,7 +26,7 @@ class HistoryUseCase @Inject constructor(
         historyRepository.deleteHistory(historyEntity)
     }
 
-    suspend fun getUserById(id: Int): HistoryEntity? {
+    suspend fun getUserById(id: Int): Flow<HistoryEntity?> {
         return historyRepository.getHistoryById(id)
     }
 
