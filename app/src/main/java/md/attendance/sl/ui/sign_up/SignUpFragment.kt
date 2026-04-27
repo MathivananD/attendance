@@ -1,34 +1,25 @@
 package md.attendance.sl.ui.sign_up
 
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.ImageButton
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.children
-import androidx.core.view.doOnLayout
+import androidx.core.view.WindowCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import md.attendance.sl.R
-import md.attendance.sl.data.UserEntity
+import md.attendance.sl.data.ui_state.SignupState
+import md.attendance.sl.data.users.UserEntity
 import md.attendance.sl.databinding.FragmentSignUpBinding
-import md.attendance.sl.di.Extension.applySafeArea
 import md.attendance.sl.di.Extension.setupToolbar
 import kotlin.getValue
-import kotlin.math.max
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
@@ -45,7 +36,7 @@ class SignUpFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
 
         setupToolbar(binding.toolbarLayout.toolbar, "Sign Up", true)
 
@@ -105,5 +96,10 @@ class SignUpFragment : Fragment() {
                 else -> {}
             }
         }
+    }
+
+    override fun onDestroyView() {
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
+        super.onDestroyView()
     }
 }

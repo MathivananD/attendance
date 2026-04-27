@@ -24,22 +24,17 @@ import md.attendance.sl.di.Extension.applySafeArea
 import md.attendance.sl.ui.home.list.ChipRecycleView
 import md.attendance.sl.ui.home.list.GridAdapter
 import md.attendance.sl.ui.home.viewmodel.HomeViewModel
-import md.attendance.sl.ui.login.view_model.LoginViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeScreen : Fragment() {
 
     val homeViewModel: HomeViewModel by viewModels()
+
     @Inject
     lateinit var sessionManager: SessionManager
 
-   lateinit  var binding: FragmentHomeScreenBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    lateinit var binding: FragmentHomeScreenBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,24 +60,26 @@ class HomeScreen : Fragment() {
             adapter = ChipRecycleView(chipList)
         }
         val space = resources.getDimensionPixelSize(R.dimen.spacing_12)
-
         binding.chipRecyclerView.addItemDecoration(
             HorizontalSpaceItemDecoration(space)
         )
         val spacing = resources.getDimensionPixelSize(R.dimen.spacing_12)
-        val gridList = (1..10).map { "Item $it" }
+        val gridList = listOf("Attendance")
 
         binding.gridRecyclerView.apply {
-            layoutManager = GridLayoutManager(requireContext(), 4)
+            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = GridAdapter(gridList)
         }
         binding.gridRecyclerView.layoutManager =
-            object : GridLayoutManager(requireContext(), 4) {
+            object : GridLayoutManager(requireContext(), 2) {
                 override fun canScrollVertically(): Boolean = false
             }
         binding.gridRecyclerView.addItemDecoration(
             GridSpacingItemDecoration(4, spacing, false)
         )
+        binding.notification.setOnClickListener {
+            findNavController().navigate(R.id.attendanceHistory)
+        }
         binding.logOut.setOnClickListener {
             sessionManager.logout()
             findNavController().navigate(
@@ -93,16 +90,16 @@ class HomeScreen : Fragment() {
                     .build()
             )
         }
-        homeViewModel.loadUser()
-      binding.dateView.tvDate.text=homeViewModel.getCurrentDateTime()
+
+        binding.dateView.tvDate.text = homeViewModel.getCurrentDateTime()
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.user.collect { user ->
 
-                    user?.let {
+                    user?.let { it ->
                         val capitalized = it.name.replaceFirstChar { it.uppercase() }
-                        binding.userName.text=getString(R.string.userNameText, capitalized)
+                        binding.userName.text = getString(R.string.userNameText, capitalized)
                     }
 
                 }
@@ -110,13 +107,5 @@ class HomeScreen : Fragment() {
         }
     }
 
-    companion object {
 
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeScreen().apply {
-
-            }
-    }
 }

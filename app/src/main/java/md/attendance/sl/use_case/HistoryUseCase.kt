@@ -1,0 +1,39 @@
+package md.attendance.sl.use_case
+
+import androidx.lifecycle.LiveData
+import md.attendance.sl.application.history.HistoryInterface
+import md.attendance.sl.data.SessionManager
+import md.attendance.sl.data.history.HistoryEntity
+import javax.inject.Inject
+
+
+
+class HistoryUseCase @Inject constructor(
+    val historyRepository: HistoryInterface,
+    val sessionManager: SessionManager
+) {
+
+    suspend fun insertHistory(historyEntity: HistoryEntity): Int {
+        return historyRepository.insertHistory(historyEntity)
+    }
+
+    suspend fun updateHistory(historyEntity: HistoryEntity) {
+        historyRepository.updateHistory(historyEntity)
+    }
+
+    suspend fun deleteHistory(historyEntity: HistoryEntity) {
+        historyRepository.deleteHistory(historyEntity)
+    }
+
+    suspend fun getUserById(id: Int): HistoryEntity? {
+        return historyRepository.getHistoryById(id)
+    }
+
+    fun getHistory(id: Int): LiveData<List<HistoryEntity>> {
+        return historyRepository.getHistory(id)
+    }
+
+    fun getCurrentUserId(): Int {
+        return sessionManager.getCurrentId()
+    }
+}

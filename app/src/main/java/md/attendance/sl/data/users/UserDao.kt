@@ -1,4 +1,4 @@
-package md.attendance.sl.data
+package md.attendance.sl.data.users
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

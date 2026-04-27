@@ -1,11 +1,10 @@
-package md.attendance.sl.application.login
+package md.attendance.sl.use_case
 
 import kotlinx.coroutines.flow.Flow
-import md.attendance.sl.application.login.interfaces.SignUpInterface
-import md.attendance.sl.data.UserEntity
-import md.attendance.sl.infrastructure.SignUpRepository
-import md.attendance.sl.infrastructure.validators.UserValidator
-import md.attendance.sl.infrastructure.validators.ValidationResult
+import md.attendance.sl.data.users.UserEntity
+import md.attendance.sl.repository.SignUpRepository
+import md.attendance.sl.repository.validators.UserValidator
+import md.attendance.sl.repository.validators.ValidationResult
 import javax.inject.Inject
 
 class SignupUserCase @Inject constructor(

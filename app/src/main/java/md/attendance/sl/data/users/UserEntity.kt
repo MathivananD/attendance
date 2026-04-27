@@ -1,4 +1,4 @@
-package md.attendance.sl.data
+package md.attendance.sl.data.users
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

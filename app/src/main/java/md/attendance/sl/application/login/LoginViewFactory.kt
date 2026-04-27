@@ -3,6 +3,7 @@ package md.attendance.sl.application.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import md.attendance.sl.ui.login.view_model.LoginViewModel
+import md.attendance.sl.use_case.LoginUserCase
 import javax.inject.Inject
 
 class LoginViewModelFactory @Inject constructor(

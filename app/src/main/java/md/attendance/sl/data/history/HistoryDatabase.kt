@@ -1,28 +1,27 @@
-package md.attendance.sl.data
+package md.attendance.sl.data.history
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [UserEntity::class], version = 1, exportSchema = false)
-abstract class UserDatabase : RoomDatabase() {
-    abstract fun userDao(): UserDao
+@Database(entities = [HistoryEntity::class], version = 1, exportSchema = false)
+abstract class HistoryDatabase : RoomDatabase() {
+    abstract fun historyDao(): HistoryDao
 
     companion object {
         @Volatile
-        private var INSTANCE: UserDatabase? = null
-        fun getDatabase(context: Context): UserDatabase {
+        private var INSTANCE: HistoryDatabase? = null
+        fun getDatabase(context: Context): HistoryDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    UserDatabase::class.java,
-                    "user_database"
+                    HistoryDatabase::class.java,
+                    "history_database"
                 ).build()
                 INSTANCE = instance
                 instance
             }
         }
-
     }
 }

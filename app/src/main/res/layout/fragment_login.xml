@@ -22,7 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/padding_12"
-        android:text="Login In"
+        android:text="@string/login_in"
+
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_22"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
@@ -35,7 +36,7 @@
         android:layout_marginBottom="24dp"
         android:textSize="@dimen/text_size_22"
         android:paddingStart="@dimen/padding_12"
-        android:text="Enter username and password"
+        android:text="@string/enter_username_and_password"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/loginView"
         app:layout_constraintStart_toStartOf="parent" />
@@ -75,6 +76,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
+                android:inputType="textEmailAddress"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 

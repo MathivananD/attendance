@@ -1,13 +1,13 @@
-package md.attendance.sl.infrastructure
+package md.attendance.sl.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import md.attendance.sl.application.login.interfaces.SignUpInterface
 import md.attendance.sl.data.SessionManager
-import md.attendance.sl.data.UserDao
-import md.attendance.sl.data.UserEntity
-import md.attendance.sl.infrastructure.validators.UserValidator
-import md.attendance.sl.infrastructure.validators.ValidationResult
+import md.attendance.sl.data.users.UserDao
+import md.attendance.sl.data.users.UserEntity
+import md.attendance.sl.repository.validators.UserValidator
+import md.attendance.sl.repository.validators.ValidationResult
 import javax.inject.Inject
 
 class SignUpRepository @Inject constructor(

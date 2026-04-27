@@ -1,7 +1,7 @@
-package md.attendance.sl.infrastructure.validators
+package md.attendance.sl.repository.validators
 
 import android.util.Log
-import md.attendance.sl.data.UserEntity
+import md.attendance.sl.data.users.UserEntity
 
 sealed class ValidationResult {
     object Success : ValidationResult()

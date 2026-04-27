@@ -1,16 +1,12 @@
-package md.attendance.sl.infrastructure
+package md.attendance.sl.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import md.attendance.sl.application.login.interfaces.LoginInterfaces
 import md.attendance.sl.data.SessionManager
-import md.attendance.sl.data.UserDao
-import md.attendance.sl.data.UserEntity
+import md.attendance.sl.data.users.UserDao
 import javax.inject.Inject
 
 

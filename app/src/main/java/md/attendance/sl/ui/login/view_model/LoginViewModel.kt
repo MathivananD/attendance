@@ -7,21 +7,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import md.attendance.sl.application.login.LoginUserCase
+import md.attendance.sl.use_case.LoginUserCase
 import md.attendance.sl.application.login.interfaces.LoginInterfaces
+import md.attendance.sl.data.ui_state.LoginState
 import javax.inject.Inject
 
-
-sealed class LoginState {
-    object Idle : LoginState()
-    object Loading : LoginState()
-    data class Success(val message: String) : LoginState()
-    data class FieldError(var userName: String?, var password: String?) : LoginState()
-    data class Error(val error: String) : LoginState()
-}
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(

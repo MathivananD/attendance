@@ -41,6 +41,7 @@
         <item name="hintTextColor">@color/accent</item>
         <item name="hintTextAppearance">@style/HintLargeStyle</item>
         <item name="android:textAppearance">@style/MyTextInputText</item>
+        <item name="editTextStyle">@style/MyEditText</item>
 
 
     </style>
@@ -59,14 +60,17 @@
         <item name="android:fontFamily">@font/saira</item>
         <item name="android:background">@null</item>
 
+        <item name="android:maxLines">1</item>
+
     </style>
 
     <style name="MyEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
-
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
-        <item name="background">@null</item>
-
+        <item name="android:inputType">textCapSentences</item>
+        <item name="android:maxLines">1</item>
+        <item name="singleLine">true</item>
+        <item name="android:minLines">1</item>
     </style>
 
     <style name="myButton" parent="Widget.Material3.Button">

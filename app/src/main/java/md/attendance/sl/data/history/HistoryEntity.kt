@@ -1,0 +1,13 @@
+package md.attendance.sl.data.history
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "history_table")
+class HistoryEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    var checkInTime: String,
+    var checkoutTime: String,
+    val userId: Int
+)

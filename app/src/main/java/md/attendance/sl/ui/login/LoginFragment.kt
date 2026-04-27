@@ -5,20 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import md.attendance.sl.R
+import md.attendance.sl.data.ui_state.LoginState
 import md.attendance.sl.databinding.FragmentLoginBinding
-import md.attendance.sl.ui.login.view_model.LoginState
 import md.attendance.sl.ui.login.view_model.LoginViewModel
 
 @AndroidEntryPoint
@@ -27,14 +23,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     val viewModel: LoginViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val initialTopPadding = view.paddingTop
-        val initialBottomPadding = view.paddingBottom
 
         ViewCompat.setOnApplyWindowInsetsListener(requireView()) { view, insets ->
 
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
-            Log.d("fffffffffff", "${systemBars.bottom} ${ime.bottom}")
             val bottom = maxOf(0, ime.bottom)
 
             view.setPadding(0, 0, 0, bottom - systemBars.bottom)
@@ -55,7 +48,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         }
         binding.signUpText.setOnClickListener {
-            findNavController().navigate(R.id.signUpFragment, )
+            findNavController().navigate(R.id.signUpFragment)
         }
     }
 
@@ -85,7 +78,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
 
                 is LoginState.Success -> {
-                    findNavController().navigate(R.id.homeFragment, )
+                    findNavController().navigate(R.id.homeFragment)
                 }
 
                 is LoginState.Error -> {

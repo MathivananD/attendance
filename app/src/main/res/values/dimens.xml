@@ -81,9 +81,15 @@
     <dimen name="text_size_28">28sp</dimen>
 
 
-    <dimen name="spacing_12">12sp</dimen>
-    <dimen name="spacing_14">14sp</dimen>
-    <dimen name="spacing_16">16sp</dimen>
+    <dimen name="spacing_12">12dp</dimen>
+    <dimen name="spacing_14">14dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
+
+
+    <dimen name="border_width_2">2dp</dimen>
+    <dimen name="border_width_3">3dp</dimen>
+    <dimen name="border_width_4">4dp</dimen>
+    <dimen name="border_width_6">6dp</dimen>
 
 
 </resources>

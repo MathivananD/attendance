@@ -14,4 +14,8 @@
     <string name="enterPassword">Enter password</string>
     <string name="acceptTerms">Accept Terms and Conditions</string>
     <string name="userNameText">YO✋ %1$s !!</string>
+    <string name="login_in">Login In</string>
+    <string name="enter_username_and_password">Enter username and password</string>
+    <string name="delete">delete</string>
+    <string name="edit">edit</string>
 </resources>

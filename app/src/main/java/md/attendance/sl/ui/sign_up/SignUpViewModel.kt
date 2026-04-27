@@ -6,27 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import md.attendance.sl.application.login.SignupUserCase
-import md.attendance.sl.data.UserEntity
-import md.attendance.sl.infrastructure.validators.ValidationResult
-import md.attendance.sl.ui.login.view_model.LoginState
+import md.attendance.sl.data.ui_state.SignupState
+import md.attendance.sl.use_case.SignupUserCase
+import md.attendance.sl.data.users.UserEntity
+import md.attendance.sl.repository.validators.ValidationResult
 import javax.inject.Inject
 
-sealed class SignupState {
-    object Idle : SignupState()
-    object Loading : SignupState()
-    data class Success(val message: String) : SignupState()
-    data class FieldError(
-        var userName: String?,
-        var email: String?,
-        var mobileNumber: String?,
-        var password: String?
-    ) : SignupState()
-
-    data class Error(val error: String) : SignupState()
-}
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(val signupUserCase: SignupUserCase) : ViewModel() {
