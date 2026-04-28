@@ -92,25 +92,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profileImage" />
 
-            <include
+            <TextView
+                android:id="@+id/countDown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@{viewModel.runningTime}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dateView"/>
+
+            <md.attendance.sl.custom_components.CheckInCheckOutView
                 android:id="@+id/checkInOutView"
-                layout="@layout/check_in_check_out"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-
+                app:checkIn="@{viewModel.getCheckInTime()}"
+                app:checkOut="@{viewModel.getCheckOutTime()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dateView" />
+                app:layout_constraintTop_toBottomOf="@id/countDown" />
 
             <Button
                 android:id="@+id/checkInCheckOutButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_12"
-                android:onClick="@{() -> viewModel.callCheckInCheckOut()}"
-                android:text="@{viewModel.isCheckedIn()?@string/check_out:@string/check_in}"
+                android:alpha="@{viewModel.isCheckOutBoolean ? 0.5f : 1f}"
+                android:text="@{viewModel.isCheckedInBoolean?@string/check_out:@string/check_in}"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{()->viewModel.callCheckInCheckOut()}"
+                android:enabled="@{!viewModel.isCheckOutBoolean}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/checkInOutView" />
 

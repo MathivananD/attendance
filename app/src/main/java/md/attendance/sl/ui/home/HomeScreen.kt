@@ -97,6 +97,10 @@ class HomeScreen : Fragment() {
         }
 
         binding.dateView.tvDate.text = homeViewModel.getCurrentDateTime()
+        homeViewModel.todayHistoryEntity.observe(viewLifecycleOwner) {
+            binding.checkInOutView.checkIn = homeViewModel.getCheckInTime()
+            binding.checkInOutView.checkOut = homeViewModel.getCheckOutTime()
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

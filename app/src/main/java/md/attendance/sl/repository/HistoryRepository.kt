@@ -1,9 +1,8 @@
 package md.attendance.sl.repository
 
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.MutableLiveData
 import md.attendance.sl.application.history.HistoryInterface
-import md.attendance.sl.data.SessionManager
 import md.attendance.sl.data.history.HistoryDao
 import md.attendance.sl.data.history.HistoryEntity
 import javax.inject.Inject
@@ -33,10 +32,10 @@ class HistoryRepository @Inject constructor(
     }
 
     override fun getHistory(id: Int): LiveData<List<HistoryEntity>> {
-        TODO("Not yet implemented")
+        return historyDao.getHistoryByUserId(id) ?: MutableLiveData(emptyList())
     }
 
     override fun getAllHistory(): LiveData<List<HistoryEntity>> {
-        TODO("Not yet implemented")
+        return historyDao.getAllHistory()
     }
 }

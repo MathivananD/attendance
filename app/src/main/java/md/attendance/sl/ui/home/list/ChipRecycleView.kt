@@ -40,6 +40,6 @@ class ChipRecycleView(val list: List<String>) : RecyclerView.Adapter<ChipRecycle
         return list.size
     }
 
-    inner class ViewHolder(val binding: ChipLayoutBinding) :
+    class ViewHolder(val binding: ChipLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
 }

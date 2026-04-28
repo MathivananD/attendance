@@ -1,15 +1,13 @@
 package md.attendance.sl.use_case
 
+import android.util.*
+import android.util.Log.*
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.Flow
 import md.attendance.sl.application.history.HistoryInterface
 import md.attendance.sl.application.home.HomeInterface
 import md.attendance.sl.data.SessionManager
 import md.attendance.sl.data.history.HistoryEntity
-import md.attendance.sl.data.users.UserDao
 import md.attendance.sl.data.users.UserEntity
-import md.attendance.sl.repository.HistoryRepository
-import md.attendance.sl.repository.HomeRepository
 import javax.inject.Inject
 
 class HomeUserCase @Inject constructor(
@@ -35,6 +33,7 @@ class HomeUserCase @Inject constructor(
 
 
     suspend fun callCheckIn(historyEntity: HistoryEntity): Long  {
+        d("Historyddddddddddddd", historyEntity.toString())
         return historyRepository.insertHistory(historyEntity)
     }
 
