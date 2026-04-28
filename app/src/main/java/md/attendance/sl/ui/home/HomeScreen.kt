@@ -1,5 +1,6 @@
 package md.attendance.sl.ui.home
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import md.attendance.sl.data.SessionManager
 import md.attendance.sl.R
 import md.attendance.sl.custom_components.GridSpacingItemDecoration
 import md.attendance.sl.custom_components.HorizontalSpaceItemDecoration
+import md.attendance.sl.data.ui_state.HomeState
 import md.attendance.sl.databinding.FragmentHomeScreenBinding
 import md.attendance.sl.di.Extension.applySafeArea
 import md.attendance.sl.ui.home.list.ChipRecycleView
@@ -49,8 +51,11 @@ class HomeScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.root.applySafeArea()
+        binding.viewModel = homeViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         val chipList = listOf("Today", "Weekly", "Monthly")
-
+        homeViewModel.loadUser()
+        observeUi()
         binding.chipRecyclerView.apply {
             layoutManager = LinearLayoutManager(
                 requireContext(),
@@ -101,6 +106,33 @@ class HomeScreen : Fragment() {
                         val capitalized = it.name.replaceFirstChar { it.uppercase() }
                         binding.userName.text = getString(R.string.userNameText, capitalized)
                     }
+
+                }
+            }
+        }
+
+    }
+
+    fun observeUi() {
+        homeViewModel.states.observe(viewLifecycleOwner) { it ->
+            when (it) {
+                is HomeState.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.mainView.visibility = View.GONE
+
+                }
+
+                is HomeState.Success -> {
+
+                    binding.progressBar.visibility = View.GONE
+                    binding.mainView.visibility = View.VISIBLE
+                }
+
+                is HomeState.Error -> {
+
+                }
+
+                else -> {
 
                 }
             }

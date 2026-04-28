@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.transition.Visibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -35,15 +36,13 @@ class HomeViewModel @Inject constructor(
     val isCheckedIn: LiveData<Boolean> = _isCheckedIn
 
 
-    init {
-        loadUser()
-    }
-
-
     fun loadUser() {
         _state.value = HomeState.Loading
-        viewModelScope.launch {
 
+        viewModelScope.launch {
+            delay(4000)
+            var rr= userCase.getAll()
+//            Log.d("loadUser","$rr")
             _user.value = userCase.getUser()
             _isCheckedIn.value = getCurrentCheckIn() != null
             _state.value = HomeState.Success("Loaded")
@@ -61,15 +60,8 @@ class HomeViewModel @Inject constructor(
         val currentDate = dateTimeHelper.getCurrentDate()
         viewModelScope.launch {
 
-            userCase.getTodayCheckIn(currentDate)
-                .catch {
-                    Log.e("CallCheckInCheckOut Error", "${it.message}")
+            history = userCase.getTodayCheckIn(currentDate)
 
-                }
-                .collect { it ->
-                    history = it
-
-                }
 
         }
         return history
@@ -78,6 +70,7 @@ class HomeViewModel @Inject constructor(
     fun callCheckInCheckOut() {
 
         val history = getCurrentCheckIn()
+        Log.d("callCheckInCheckOut","$history")
         if (history == null) {
             callCheckIn()
         } else {
@@ -90,19 +83,21 @@ class HomeViewModel @Inject constructor(
         val currentTime = dateTimeHelper.getCurrentDateTime()
         val history = HistoryEntity(id = 0, checkInTime = currentTime, checkoutTime = "")
         viewModelScope.launch {
-            userCase.callCheckIn(history).catch { }.collect { }
+            user.value
+            val id: Long = userCase.callCheckIn(history)
+            _isCheckedIn.value=true
         }
     }
 
     private fun callCheckOut() {
         val currentTime = dateTimeHelper.getCurrentDateTime()
         viewModelScope.launch {
-            userCase.getTodayCheckIn(currentTime).catch { }.collect {
-                if (it != null) {
-                    it.checkoutTime = currentTime
-                    userCase.callCheckOut(it)
-                }
+         val history=   userCase.getTodayCheckIn(currentTime)
+            if(history!=null){
+                history.checkoutTime = currentTime
+                userCase.callCheckOut(history)
             }
+
         }
     }
 }

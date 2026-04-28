@@ -12,7 +12,7 @@ import javax.inject.Inject
 class HistoryRepository @Inject constructor(
     private val historyDao: HistoryDao
 ) : HistoryInterface {
-    override suspend fun insertHistory(historyEntity: HistoryEntity): Int {
+    override suspend fun insertHistory(historyEntity: HistoryEntity): Long {
        return  historyDao.insertHistory(historyEntity)
     }
 
@@ -28,8 +28,8 @@ class HistoryRepository @Inject constructor(
           return historyDao.getHistoryById(id)
     }
 
-    override suspend fun getHistoryByDate(date: String,id: Int):  Flow<HistoryEntity?> {
-        TODO("Not yet implemented")
+    override suspend fun getHistoryByDate(date: String,id: Int):  HistoryEntity? {
+       return  historyDao.getHistoryByDate(date,id)
     }
 
     override fun getHistory(id: Int): LiveData<List<HistoryEntity>> {

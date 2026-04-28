@@ -14,7 +14,7 @@ class HistoryUseCase @Inject constructor(
     val sessionManager: SessionManager
 ) {
 
-    suspend fun insertHistory(historyEntity: HistoryEntity): Int {
+    suspend fun insertHistory(historyEntity: HistoryEntity): Long {
         return historyRepository.insertHistory(historyEntity)
     }
 
@@ -26,7 +26,7 @@ class HistoryUseCase @Inject constructor(
         historyRepository.deleteHistory(historyEntity)
     }
 
-    suspend fun getUserById(id: Int): Flow<HistoryEntity?> {
+    suspend fun getUserById(id: Int): HistoryEntity? {
         return historyRepository.getHistoryById(id)
     }
 

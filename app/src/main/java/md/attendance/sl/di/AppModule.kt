@@ -20,7 +20,6 @@ import md.attendance.sl.data.history.HistoryDatabase
 import md.attendance.sl.repository.HistoryRepository
 import md.attendance.sl.repository.HomeRepository
 import md.attendance.sl.repository.validators.UserValidator
-import md.attendance.sl.use_case.HomeUserCase
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -49,10 +48,15 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun getDateTimeHelper(): DateTimeHelper {
+        return DateTimeHelper
+    }
+
+    @Provides
+    @Singleton
     fun getHistoryDao(app: Application): HistoryDao {
         return HistoryDatabase.getDatabase(app.applicationContext).historyDao()
     }
-
 
     @Provides
     @Singleton
@@ -68,6 +72,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun getHomeRepository(userDao: UserDao): HomeInterface {
+        return HomeRepository(userDao)
+    }
+
+    @Provides
+    @Singleton
     fun getLoginUseCase(
         loginRepository: LoginInterfaces
     ): LoginUserCase {
@@ -76,19 +86,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun getHomeUseCase(
-        historyRepository: HistoryInterface,
-        homeRepository: HomeInterface,
-        sessionManager: SessionManager,
-        ): HomeUserCase {
-        return HomeUserCase(homeRepository, historyRepository, sessionManager)
-    }
-
-
-    @Provides
-    @Singleton
     fun getUserValidator(): UserValidator {
         return UserValidator()
     }
 }
-
