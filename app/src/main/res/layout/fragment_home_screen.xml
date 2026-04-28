@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="md.attendance.sl.ui.home.viewmodel.HomeViewModel" />
@@ -24,9 +26,10 @@
             android:layout_height="match_parent"
             android:clipChildren="false"
             android:clipToPadding="false"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:padding="@dimen/margin_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
             tools:context=".ui.home.HomeScreen">
 
 
@@ -100,6 +103,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateView" />
 
+            <Button
+                android:id="@+id/checkInCheckOutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/check_out"
+                android:onClick="@{() -> viewModel.callCheckInCheckOut()}"
+                app:layout_constraintTop_toBottomOf="@+id/checkInOutView"
+                />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chipRecyclerView"
                 android:layout_width="match_parent"
@@ -110,7 +125,7 @@
                 android:overScrollMode="never"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                app:layout_constraintTop_toBottomOf="@id/checkInOutView" />
+                app:layout_constraintTop_toBottomOf="@id/checkInCheckOutButton" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/gridRecyclerView"
@@ -129,6 +144,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gridRecyclerView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
             android:layout_width="48dp"
@@ -138,12 +154,12 @@
 
             app:indicatorColor="@color/primary"
 
-            app:trackThickness="4dp"
-
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackThickness="4dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

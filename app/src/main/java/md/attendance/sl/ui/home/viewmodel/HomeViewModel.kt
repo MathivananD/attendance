@@ -1,11 +1,13 @@
 package md.attendance.sl.ui.home.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.transition.Visibility
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -21,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     val userCase: HomeUserCase,
-    val dateTimeHelper: DateTimeHelper
+    val dateTimeHelper: DateTimeHelper,
 ) : ViewModel() {
     private val _state = MutableLiveData<HomeState>(HomeState.Idle)
 
@@ -29,10 +31,9 @@ class HomeViewModel @Inject constructor(
     private val _user = MutableStateFlow<UserEntity?>(null)
 
     val user: MutableStateFlow<UserEntity?> = _user
-    private val _isCheckedIn = MutableStateFlow(false)
+    private val _isCheckedIn = MutableLiveData(false)
+    val isCheckedIn: LiveData<Boolean> = _isCheckedIn
 
-    val isCheckedIn: MutableStateFlow<Boolean> = _isCheckedIn
-    private var _currentUserId: Int? = null
 
     init {
         loadUser()
@@ -41,43 +42,67 @@ class HomeViewModel @Inject constructor(
 
     fun loadUser() {
         _state.value = HomeState.Loading
-        _currentUserId = userCase.getCurrentUserId()
         viewModelScope.launch {
 
-            _user.value = userCase.getUser(_currentUserId!!)
-            _state.value= HomeState.Success("Loaded")
+            _user.value = userCase.getUser()
+            _isCheckedIn.value = getCurrentCheckIn() != null
+            _state.value = HomeState.Success("Loaded")
         }
     }
 
+
     fun getCurrentDateTime(): String {
-        val formatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")
-        return java.time.LocalDateTime.now().format(formatter)
+
+        return dateTimeHelper.getCurrentDateTime()
     }
 
-    fun callCheckInCheckOut() {
+    fun getCurrentCheckIn(): HistoryEntity? {
+        var history: HistoryEntity? = null;
         val currentDate = dateTimeHelper.getCurrentDate()
         viewModelScope.launch {
 
-            userCase.getTodayCheckIn(
-                currentDate,
-                _currentUserId!!
-            )
+            userCase.getTodayCheckIn(currentDate)
                 .catch {
+                    Log.e("CallCheckInCheckOut Error", "${it.message}")
 
                 }
-                .collect { history ->
-
-                    if (history == null) {
-
-                        // no check-in found
-
-                    } else {
-
-                        // history available
-
-                    }
+                .collect { it ->
+                    history = it
 
                 }
+
+        }
+        return history
+    }
+
+    fun callCheckInCheckOut() {
+
+        val history = getCurrentCheckIn()
+        if (history == null) {
+            callCheckIn()
+        } else {
+            callCheckOut()
+
+        }
+    }
+
+    private fun callCheckIn() {
+        val currentTime = dateTimeHelper.getCurrentDateTime()
+        val history = HistoryEntity(id = 0, checkInTime = currentTime, checkoutTime = "")
+        viewModelScope.launch {
+            userCase.callCheckIn(history).catch { }.collect { }
+        }
+    }
+
+    private fun callCheckOut() {
+        val currentTime = dateTimeHelper.getCurrentDateTime()
+        viewModelScope.launch {
+            userCase.getTodayCheckIn(currentTime).catch { }.collect {
+                if (it != null) {
+                    it.checkoutTime = currentTime
+                    userCase.callCheckOut(it)
+                }
+            }
         }
     }
 }

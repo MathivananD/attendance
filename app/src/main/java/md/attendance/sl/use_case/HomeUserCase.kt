@@ -16,25 +16,24 @@ class HomeUserCase @Inject constructor(
     val historyRepository: HistoryInterface,
     val sessionManager: SessionManager,
 ) {
+    val currentUserId = sessionManager.getCurrentId()
 
+    suspend fun getUser(): UserEntity? {
 
-
-    suspend fun getUser(id: Int): UserEntity? {
-        return homeRepository.getUser(id);
+        return homeRepository.getUser(currentUserId);
     }
 
     fun getCurrentUserId(): Int {
         return sessionManager.getCurrentId()
     }
 
-   suspend fun getTodayCheckIn(date: String,id: Int): Flow<HistoryEntity?> {
-        return historyRepository.getHistoryByDate(date,id)
+    suspend fun getTodayCheckIn(date: String): Flow<HistoryEntity?> {
+
+        return historyRepository.getHistoryByDate(date, currentUserId)
     }
 
 
-
-
-    suspend fun callCheckIn(historyEntity: HistoryEntity): Int {
+    suspend fun callCheckIn(historyEntity: HistoryEntity): Int  {
         return historyRepository.insertHistory(historyEntity)
     }
 

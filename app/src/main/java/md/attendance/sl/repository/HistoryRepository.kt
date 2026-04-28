@@ -13,19 +13,19 @@ class HistoryRepository @Inject constructor(
     private val historyDao: HistoryDao
 ) : HistoryInterface {
     override suspend fun insertHistory(historyEntity: HistoryEntity): Int {
-        TODO("Not yet implemented")
+       return  historyDao.insertHistory(historyEntity)
     }
 
     override suspend fun updateHistory(historyEntity: HistoryEntity) {
-
+       return historyDao.updateHistory(historyEntity)
     }
 
     override suspend fun deleteHistory(historyEntity: HistoryEntity) {
-        TODO("Not yet implemented")
+       return historyDao.deleteHistory(historyEntity)
     }
 
-    override suspend fun getHistoryById(id: Int):  Flow<HistoryEntity?> {
-        TODO("Not yet implemented")
+    override suspend fun getHistoryById(id: Int):  HistoryEntity? {
+          return historyDao.getHistoryById(id)
     }
 
     override suspend fun getHistoryByDate(date: String,id: Int):  Flow<HistoryEntity?> {

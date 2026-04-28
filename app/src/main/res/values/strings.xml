@@ -18,4 +18,6 @@
     <string name="enter_username_and_password">Enter username and password</string>
     <string name="delete">delete</string>
     <string name="edit">edit</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check out</string>
 </resources>

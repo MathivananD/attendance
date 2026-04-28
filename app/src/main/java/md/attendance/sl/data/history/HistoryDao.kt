@@ -12,7 +12,7 @@ import androidx.room.Update
 interface HistoryDao {
 
     @Insert
-    suspend fun insertHistory(user: HistoryEntity): Long
+    suspend fun insertHistory(user: HistoryEntity): Int
 
     @Update
     suspend fun updateHistory(user: HistoryEntity)

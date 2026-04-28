@@ -8,7 +8,7 @@ interface HistoryInterface {
     suspend fun insertHistory(historyEntity: HistoryEntity): Int
     suspend fun updateHistory(historyEntity: HistoryEntity)
     suspend fun deleteHistory(historyEntity: HistoryEntity)
-    suspend fun getHistoryById(id: Int): Flow<HistoryEntity?>
+    suspend fun getHistoryById(id: Int): HistoryEntity?
 
     suspend fun getHistoryByDate(date: String,id: Int):  Flow<HistoryEntity?>
     fun getHistory(id: Int): LiveData<List<HistoryEntity>>

@@ -9,5 +9,5 @@ class HistoryEntity(
     val id: Int = 0,
     var checkInTime: String,
     var checkoutTime: String,
-    val userId: Int
+    val userId: Int=-1
 )
