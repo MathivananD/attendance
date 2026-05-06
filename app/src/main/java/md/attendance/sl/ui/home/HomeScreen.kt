@@ -54,7 +54,6 @@ class HomeScreen : Fragment() {
         binding.viewModel = homeViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         val chipList = listOf("Today", "Weekly", "Monthly")
-        homeViewModel.loadUser()
         observeUi()
         binding.chipRecyclerView.apply {
             layoutManager = LinearLayoutManager(

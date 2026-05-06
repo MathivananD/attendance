@@ -61,7 +61,7 @@ object Extension {
         if (showBack) {
             toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_ios_24)
             toolbar.setNavigationOnClickListener {
-                findNavController().navigateUp()
+                findNavController().popBackStack()
             }
         }
 

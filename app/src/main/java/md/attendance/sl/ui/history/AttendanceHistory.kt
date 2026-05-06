@@ -9,13 +9,14 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import md.attendance.sl.databinding.FragmentAttendanceHistoryBinding
 import md.attendance.sl.di.Extension.setupToolbar
+import md.attendance.sl.ui.history.view_model.HistoryViewModel
 import md.attendance.sl.ui.home.viewmodel.HomeViewModel
 
 @AndroidEntryPoint
 class AttendanceHistory : Fragment() {
     lateinit var binding: FragmentAttendanceHistoryBinding
 
-     val viewModel: HomeViewModel  by viewModels()
+     val viewModel: HistoryViewModel  by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

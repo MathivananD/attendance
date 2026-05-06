@@ -41,6 +41,7 @@ class HomeViewModel @Inject constructor(
 
     val todayHistoryEntity: LiveData<HistoryEntity?> = _todayHistoryEntity
     private var timerJob: Job? = null
+    private var isUserLoaded = false
     private val _isCheckedIn: MutableLiveData<CheckInOutEnum> = MutableLiveData(CheckInOutEnum.NONE)
     val isCheckedIn: LiveData<CheckInOutEnum> = _isCheckedIn
 
@@ -55,7 +56,12 @@ class HomeViewModel @Inject constructor(
             it == CheckInOutEnum.CHECKOUT
         }
 
+    init {
+        loadUser()
+    }
+
     fun loadUser() {
+        if (isUserLoaded || _state.value == HomeState.Loading) return
 
         _state.value = HomeState.Loading
 
@@ -98,6 +104,7 @@ class HomeViewModel @Inject constructor(
 
             _state.value =
                 HomeState.Success("Loaded")
+            isUserLoaded = true
         }
     }
 
