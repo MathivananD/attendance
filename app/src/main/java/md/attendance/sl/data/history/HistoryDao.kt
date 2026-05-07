@@ -1,11 +1,11 @@
 package md.attendance.sl.data.history
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -21,7 +21,7 @@ interface HistoryDao {
     suspend fun deleteHistory(user: HistoryEntity)
 
     @Query("SELECT * FROM history_table WHERE userId = :id")
-    fun getHistoryByUserId(id: Int): LiveData<List<HistoryEntity>>?
+    fun getHistoryByUserId(id: Int): Flow<List<HistoryEntity>>
 
     @Query(
         """
@@ -39,6 +39,6 @@ interface HistoryDao {
     suspend fun getHistoryById(id: Int): HistoryEntity?
 
     @Query("SELECT * FROM history_table")
-    fun getAllHistory(): LiveData<List<HistoryEntity>>
+    fun getAllHistory(): Flow<List<HistoryEntity>>
 
 }

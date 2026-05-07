@@ -25,3 +25,25 @@ class HorizontalSpaceItemDecoration(private val space: Int) :
         }
     }
 }
+
+class VerticalSpaceItemDecoration(private val space: Int) :
+    RecyclerView.ItemDecoration() {
+
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        val position = parent.getChildAdapterPosition(view)
+
+        if (position != RecyclerView.NO_POSITION) {
+            outRect.bottom = space
+
+            // optional: first item left spacing
+            if (position == 0) {
+//                outRect.left = space
+            }
+        }
+    }
+}

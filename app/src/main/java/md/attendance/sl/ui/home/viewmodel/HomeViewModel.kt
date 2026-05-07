@@ -90,7 +90,7 @@ class HomeViewModel @Inject constructor(
                 val checkOutMilliSeconds =
                     dateTimeHelper.dateToMillis(todayHistoryEntity.value!!.checkoutTime)
                 if (checkInMilliSeconds != null && checkOutMilliSeconds != null) {
-                    Log.d("vvvvvvvvvvvvvv","  ${checkInMilliSeconds}   $checkOutMilliSeconds")
+
                     _runningTime.value =
                         dateTimeHelper.getWorkedTime(checkInMilliSeconds, checkOutMilliSeconds)
 

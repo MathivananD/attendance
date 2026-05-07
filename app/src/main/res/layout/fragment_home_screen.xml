@@ -155,21 +155,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gridRecyclerView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.google.android.material.progressindicator.CircularProgressIndicator
+        <include
             android:id="@+id/progressBar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            layout="@layout/custom_progress_indicator_layout"
+            />
 
-            android:indeterminate="true"
-
-            app:indicatorColor="@color/primary"
-
-            app:trackThickness="4dp"
-
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

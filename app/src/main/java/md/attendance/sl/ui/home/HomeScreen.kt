@@ -120,14 +120,14 @@ class HomeScreen : Fragment() {
         homeViewModel.states.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is HomeState.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressBar.progressBar.visibility = View.VISIBLE
                     binding.mainView.visibility = View.GONE
 
                 }
 
                 is HomeState.Success -> {
 
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressBar.progressBar.visibility = View.GONE
                     binding.mainView.visibility = View.VISIBLE
                 }
 

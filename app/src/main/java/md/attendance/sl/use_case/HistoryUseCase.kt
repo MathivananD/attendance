@@ -1,6 +1,6 @@
 package md.attendance.sl.use_case
 
-import androidx.lifecycle.LiveData
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import md.attendance.sl.application.history.HistoryInterface
 import md.attendance.sl.data.SessionManager
@@ -30,7 +30,9 @@ class HistoryUseCase @Inject constructor(
         return historyRepository.getHistoryById(id)
     }
 
-    fun getHistory(id: Int): LiveData<List<HistoryEntity>> {
+    fun getHistory(): Flow<List<HistoryEntity>> {
+        val id=sessionManager.getCurrentId()
+        Log.d("vvvvvvvvvvvvvvv 5555","${id}")
         return historyRepository.getHistory(id)
     }
 

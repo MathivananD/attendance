@@ -8,37 +8,50 @@
     android:background="@drawable/history_bg_card"
 
     android:padding="12dp">
-
-    <TextView
-        android:id="@+id/checkIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/dash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="8dp"
-        android:layout_toEndOf="@id/checkIn"
-
-        android:text=" - " />
-
-    <TextView
-        android:id="@+id/checkOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_toEndOf="@id/dash" />
-
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        />
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/edit"
+        android:layout_below="@+id/date"
+        android:orientation="horizontal">
 
-        android:layout_below="@+id/checkIn"
+        <TextView
+            android:id="@+id/checkIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
 
-        android:text="18 july 2025" />
+            android:maxLines="2" />
+
+        <TextView
+            android:id="@+id/dash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:text=" - " />
+
+        <TextView
+            android:id="@+id/checkOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:ellipsize="end"
+            android:maxLines="2" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/workingHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topLayout"
+        />
+
 
     <ImageButton
         android:id="@+id/edit"

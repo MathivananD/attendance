@@ -2,7 +2,7 @@ package md.attendance.sl.use_case
 
 import android.util.*
 import android.util.Log.*
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import md.attendance.sl.application.history.HistoryInterface
 import md.attendance.sl.application.home.HomeInterface
 import md.attendance.sl.data.SessionManager
@@ -40,7 +40,7 @@ class HomeUserCase @Inject constructor(
     suspend fun callCheckOut(historyEntity: HistoryEntity) {
         return historyRepository.updateHistory(historyEntity)
     }
-     fun getAll():LiveData<List<HistoryEntity>> {
+     fun getAll(): Flow<List<HistoryEntity>> {
         return historyRepository.getAllHistory()
     }
 

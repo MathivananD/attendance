@@ -28,6 +28,16 @@ object DateTimeHelper {
             pattern
         )
     }
+    fun getDateTime(
+        date: String
+    ): String {
+        val parsedDate = stringToDate(date) ?: return "";
+
+        return formatDate(
+            parsedDate,
+            DEFAULT_DATE_FORMAT
+        )
+    }
 
     /**
      * Current date

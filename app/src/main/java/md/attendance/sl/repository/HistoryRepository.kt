@@ -1,7 +1,6 @@
 package md.attendance.sl.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.Flow
 import md.attendance.sl.application.history.HistoryInterface
 import md.attendance.sl.data.history.HistoryDao
 import md.attendance.sl.data.history.HistoryEntity
@@ -31,11 +30,11 @@ class HistoryRepository @Inject constructor(
        return  historyDao.getHistoryByDate(date,id)
     }
 
-    override fun getHistory(id: Int): LiveData<List<HistoryEntity>> {
-        return historyDao.getHistoryByUserId(id) ?: MutableLiveData(emptyList())
+    override fun getHistory(id: Int): Flow<List<HistoryEntity>> {
+        return historyDao.getHistoryByUserId(id)
     }
 
-    override fun getAllHistory(): LiveData<List<HistoryEntity>> {
+    override fun getAllHistory(): Flow<List<HistoryEntity>> {
         return historyDao.getAllHistory()
     }
 }
