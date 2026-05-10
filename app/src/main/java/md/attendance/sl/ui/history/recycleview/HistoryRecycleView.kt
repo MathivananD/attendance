@@ -7,11 +7,14 @@ import md.attendance.sl.data.history.HistoryEntity
 import md.attendance.sl.databinding.CustomHistoryCardBinding
 import md.attendance.sl.di.DateTimeHelper
 
-class HistoryRecycleView(private val historyList: List<HistoryEntity>) :
+class HistoryRecycleView(
+    private val historyList: List<HistoryEntity>,
+     val listener: OnHistoryTapListener,
+) :
     RecyclerView.Adapter<HistoryRecycleView.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): ViewHolder {
         val binding = CustomHistoryCardBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
@@ -29,15 +32,39 @@ class HistoryRecycleView(private val historyList: List<HistoryEntity>) :
             DateTimeHelper.dateToMillis(item.checkInTime)
         val checkOutMilliSeconds =
             DateTimeHelper.dateToMillis(item.checkoutTime)
-        if (checkInMilliSeconds != null && checkOutMilliSeconds==null) {
+        if (checkInMilliSeconds != null && checkOutMilliSeconds == null) {
             holder.binding.workingHours.text = DateTimeHelper.getWorkedTime(checkInMilliSeconds)
         } else if (checkOutMilliSeconds != null) {
             holder.binding.workingHours.text =
                 DateTimeHelper.getWorkedTime(checkInMilliSeconds!!, checkOutMilliSeconds)
         }
+        holder.binding.apply {
+
+            root.setOnClickListener {
+                listener.onTap(item)
+            }
+
+            edit.setOnClickListener {
+                listener.onEditTap(item)
+            }
+
+            delete.setOnClickListener {
+                listener.onDeleteTap(item)
+            }
+
+
+        }
 
     }
 
+    interface OnHistoryTapListener {
+
+        fun onTap(item: HistoryEntity)
+
+        fun onEditTap(item: HistoryEntity)
+
+        fun onDeleteTap(item: HistoryEntity)
+    }
     override fun getItemCount(): Int {
         return historyList.size
     }
@@ -46,3 +73,4 @@ class HistoryRecycleView(private val historyList: List<HistoryEntity>) :
         RecyclerView.ViewHolder(binding.root)
 
 }
+

@@ -43,5 +43,15 @@
         android:id="@+id/attendanceHistory"
         android:name="md.attendance.sl.ui.history.AttendanceHistory"
         android:label="fragment_home_screen"
-        tools:layout="@layout/fragment_attendance_history" />
+        tools:layout="@layout/fragment_attendance_history" >
+        <action
+            android:id="@+id/action_attendanceHistory_to_editHistory"
+            app:destination="@id/editHistory" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editHistory"
+        android:name="md.attendance.sl.ui.history.EditHistory"
+        android:label="fragment_home_screen"
+        tools:layout="@layout/fragment_edit_history" />
 </navigation>

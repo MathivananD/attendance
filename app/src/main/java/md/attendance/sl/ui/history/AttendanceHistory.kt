@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import md.attendance.sl.R
@@ -16,9 +18,10 @@ import md.attendance.sl.databinding.FragmentAttendanceHistoryBinding
 import md.attendance.sl.di.Extension.setupToolbar
 import md.attendance.sl.ui.history.recycleview.HistoryRecycleView
 import md.attendance.sl.ui.history.view_model.HistoryViewModel
+import md.attendance.sl.data.history.HistoryEntity
 
 @AndroidEntryPoint
-class AttendanceHistory : Fragment() {
+class AttendanceHistory : Fragment() , HistoryRecycleView.OnHistoryTapListener {
     lateinit var binding: FragmentAttendanceHistoryBinding
 
     val viewModel: HistoryViewModel by viewModels()
@@ -52,7 +55,7 @@ class AttendanceHistory : Fragment() {
                 is UiState.Success -> {
                     binding.progressBar.progressBar.visibility = View.GONE
                     binding.scrollView.visibility = View.VISIBLE
-                    binding.chipRecyclerView.adapter = HistoryRecycleView(it.data)
+                    binding.chipRecyclerView.adapter = HistoryRecycleView(it.data,this)
 
                     val space = resources.getDimensionPixelSize(R.dimen.spacing_12)
                     binding.chipRecyclerView.addItemDecoration(
@@ -69,5 +72,31 @@ class AttendanceHistory : Fragment() {
                 }
             }
         }
+    }
+    override fun onTap(
+        item: HistoryEntity
+    ) {
+
+        Toast.makeText(
+            requireContext(),
+            "Tapped ${item.id}",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun onEditTap(
+        item: HistoryEntity
+    ) {
+
+//        findNavController().navigate(
+//            R.id.editHistoryFragment
+//        )
+    }
+
+    override fun onDeleteTap(
+        item: HistoryEntity
+    ) {
+
+//        viewModel.delete(item)
     }
 }
