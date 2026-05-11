@@ -1,17 +1,22 @@
 package md.attendance.sl.ui.history
 
+import android.Manifest
 import android.os.Bundle
+import androidx.core.app.NotificationManagerCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresPermission
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.core.app.NotificationCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import md.attendance.sl.R
-import md.attendance.sl.custom_components.HorizontalSpaceItemDecoration
 import md.attendance.sl.custom_components.VerticalSpaceItemDecoration
 import md.attendance.sl.data.ui_state.UiState
 import md.attendance.sl.databinding.FragmentAttendanceHistoryBinding
@@ -21,7 +26,7 @@ import md.attendance.sl.ui.history.view_model.HistoryViewModel
 import md.attendance.sl.data.history.HistoryEntity
 
 @AndroidEntryPoint
-class AttendanceHistory : Fragment() , HistoryRecycleView.OnHistoryTapListener {
+class AttendanceHistory : Fragment(), HistoryRecycleView.OnHistoryTapListener {
     lateinit var binding: FragmentAttendanceHistoryBinding
 
     val viewModel: HistoryViewModel by viewModels()
@@ -55,7 +60,7 @@ class AttendanceHistory : Fragment() , HistoryRecycleView.OnHistoryTapListener {
                 is UiState.Success -> {
                     binding.progressBar.progressBar.visibility = View.GONE
                     binding.scrollView.visibility = View.VISIBLE
-                    binding.chipRecyclerView.adapter = HistoryRecycleView(it.data,this)
+                    binding.chipRecyclerView.adapter = HistoryRecycleView(it.data, this)
 
                     val space = resources.getDimensionPixelSize(R.dimen.spacing_12)
                     binding.chipRecyclerView.addItemDecoration(
@@ -73,6 +78,7 @@ class AttendanceHistory : Fragment() , HistoryRecycleView.OnHistoryTapListener {
             }
         }
     }
+
     override fun onTap(
         item: HistoryEntity
     ) {
@@ -88,15 +94,58 @@ class AttendanceHistory : Fragment() , HistoryRecycleView.OnHistoryTapListener {
         item: HistoryEntity
     ) {
 
+        val action =
+            AttendanceHistoryDirections
+                .actionAttendanceHistoryToEditHistory(
+                    item
+                )
+
+        findNavController().navigate(action)
+
 //        findNavController().navigate(
 //            R.id.editHistoryFragment
 //        )
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onDeleteTap(
         item: HistoryEntity
     ) {
+        showNotification()
 
+//        MaterialAlertDialogBuilder(
+//            requireContext()
+//        )
+//            .setTitle("Delete")
+//            .setMessage(
+//                "Are you sure want to delete?"
+//            )
+//            .setPositiveButton("Yes") { _, _ ->
+//
+////                viewModel.delete(item)
+//            }
+//            .setNegativeButton("No") { dialog, _ ->
+//
+//                dialog.dismiss()
+//            }
+//            .show()
 //        viewModel.delete(item)
+    }
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private fun showNotification() {
+
+        val builder = NotificationCompat.Builder(
+            requireContext(),
+            "my_channel_id"
+        )
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("Attendance")
+            .setContentText("Notification created successfully")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        NotificationManagerCompat
+            .from(requireContext())
+            .notify(1, builder.build())
     }
 }

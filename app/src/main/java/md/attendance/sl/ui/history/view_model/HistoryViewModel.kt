@@ -15,7 +15,8 @@ import md.attendance.sl.use_case.HistoryUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class HistoryViewModel @Inject constructor(val historyUseCase: HistoryUseCase) : ViewModel() {
+class HistoryViewModel @Inject constructor(private val historyUseCase: HistoryUseCase) :
+    ViewModel() {
 
     private val _state: MutableLiveData<UiState<List<HistoryEntity>>> =
         MutableLiveData(UiState.Idle)
@@ -42,4 +43,9 @@ class HistoryViewModel @Inject constructor(val historyUseCase: HistoryUseCase) :
         }
     }
 
+    fun updateEntity(updatedEntity: HistoryEntity) {
+        viewModelScope.launch {
+            historyUseCase.updateHistory(updatedEntity)
+        }
+    }
 }

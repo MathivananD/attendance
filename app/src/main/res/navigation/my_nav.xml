@@ -53,5 +53,9 @@
         android:id="@+id/editHistory"
         android:name="md.attendance.sl.ui.history.EditHistory"
         android:label="fragment_home_screen"
-        tools:layout="@layout/fragment_edit_history" />
+        tools:layout="@layout/fragment_edit_history" >
+        <argument
+            android:name="history"
+            app:argType="md.attendance.sl.data.history.HistoryEntity" />
+    </fragment>
 </navigation>

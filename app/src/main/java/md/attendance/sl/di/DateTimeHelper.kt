@@ -72,7 +72,7 @@ object DateTimeHelper {
      */
     fun formatDate(
         date: Date,
-        pattern: String
+        pattern: String =DEFAULT_DATE_TIME_FORMAT
     ): String {
 
         val formatter = SimpleDateFormat(
