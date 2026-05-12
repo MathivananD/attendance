@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_homeFragment_to_profile"
             app:destination="@id/profile" />
+        <action
+            android:id="@+id/action_homeFragment_to_mapScreen"
+            app:destination="@id/mapScreen" />
     </fragment>
 
     <fragment
@@ -78,5 +81,13 @@
         <argument
             android:name="user"
             app:argType="md.attendance.sl.data.users.UserEntity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapScreen"
+        android:name="md.attendance.sl.MapsFragment"
+        android:label="fragment_map_screen"
+        tools:layout="@layout/fragment_maps">
+
     </fragment>
 </navigation>

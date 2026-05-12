@@ -1,6 +1,7 @@
 package md.attendance.sl.di
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.webkit.MimeTypeMap
@@ -42,8 +43,9 @@ object SaveImageHandler {
     }
 
     fun createImageFile(
-        context: Context
-    ): FileResult? {
+        context: Context,
+        bitmap: Bitmap?
+    ): String? {
 
         return try {
 
@@ -62,17 +64,18 @@ object SaveImageHandler {
                     folder,
                     "${FOLDER_NAME}_${System.currentTimeMillis()}.jpg"
                 )
-
+            FileOutputStream(file).use { outputStream ->
+                bitmap?.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    100,
+                    outputStream
+                )
+            }
             currentImagePath =
                 file.absolutePath
 
-           val uril= FileProvider.getUriForFile(
-                context,
-                "${context.packageName}.provider",
-                file
-            )
-            FileResult(uril,file.absolutePath)
 
+            file.absolutePath
         } catch (e: Exception) {
 
             Log.e(

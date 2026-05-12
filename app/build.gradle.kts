@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidx.navigation.safeargs)
     kotlin("kapt")
     id("kotlin-parcelize")
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -65,8 +66,14 @@ dependencies {
 
     //Room db
     implementation(libs.androidx.room.runtime)
+    //noinspection KaptUsageInsteadOfKsp
     kapt(libs.androidx.room.compiler)
     implementation(libs.room.ktx)
+
+
+    // google map plusing
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 
     // shared preference
     implementation(libs.androidx.preference.ktx)

@@ -61,7 +61,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun loadUser() {
-        if (isUserLoaded || _state.value == HomeState.Loading) return
+//        if (isUserLoaded || _state.value == HomeState.Loading) return
 
         _state.value = HomeState.Loading
 

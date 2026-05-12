@@ -85,7 +85,7 @@ class HomeScreen : Fragment() {
             GridSpacingItemDecoration(4, spacing, false)
         )
         binding.notification.setOnClickListener {
-            findNavController().navigate(R.id.attendanceHistory)
+            findNavController().navigate(R.id.mapScreen)
         }
         binding.logOut.setOnClickListener {
             sessionManager.logout()
@@ -97,7 +97,13 @@ class HomeScreen : Fragment() {
                     .build()
             )
         }
+        binding.swipeRefresh
+            .setOnRefreshListener {
 
+                homeViewModel.loadUser()
+                binding.swipeRefresh
+                    .isRefreshing = false
+            }
         binding.dateView.tvDate.text = homeViewModel.getCurrentDateTime()
         homeViewModel.todayHistoryEntity.observe(viewLifecycleOwner) {
             binding.checkInOutView.checkIn = homeViewModel.getCheckInTime()

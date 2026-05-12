@@ -24,7 +24,7 @@ import md.attendance.sl.di.SaveImageHandler
 
 class ImagePickerBottomSheet(
     onCamera: (bitmap: String?) -> Unit,
-    onGallery: (uri: String?) -> Unit
+    onGallery: (uri: String?) -> Unit,
 ) :
     BottomSheetDialogFragment() {
 
@@ -33,7 +33,6 @@ class ImagePickerBottomSheet(
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    var imagePath: FileResult? = null
     private val requestCameraPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
 
@@ -65,11 +64,10 @@ class ImagePickerBottomSheet(
         }
 
     private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { bitmap ->
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             dismiss()
-            if(bitmap){
-                onCamera(imagePath!!.path)
-            }
+            val imagePath = SaveImageHandler.createImageFile(requireContext(), bitmap)
+            onCamera(imagePath)
 
         }
     private val galleryLauncher =
@@ -81,7 +79,7 @@ class ImagePickerBottomSheet(
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
         _binding =
@@ -93,7 +91,7 @@ class ImagePickerBottomSheet(
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(
         view: View,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) {
         binding.tvCamera.setOnClickListener {
 
@@ -116,15 +114,12 @@ class ImagePickerBottomSheet(
     }
 
     fun openCamera() {
-        imagePath = SaveImageHandler.createImageFile(requireContext())
-        if (imagePath != null) {
-            cameraLauncher.launch(imagePath!!.uri)
-        }
+        cameraLauncher.launch(null)
 
     }
 
     fun openGallery() {
-        imagePath = null
+
         galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
