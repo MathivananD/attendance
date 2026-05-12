@@ -59,16 +59,3 @@ class AttendanceItemView @JvmOverloads constructor(
         binding.tvLabel.text = label
     }
 }
-
-object AttendanceItemBindingAdapters {
-
-    @JvmStatic
-    @BindingAdapter("title")
-    fun setTitle(
-        view: AttendanceItemView,
-        value: String?
-    ) {
-
-        view.setTime(value ?: "")
-    }
-}

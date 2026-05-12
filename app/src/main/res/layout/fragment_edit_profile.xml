@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.EditProfile">
+
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/custom_tool_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainScreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_8"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout">
+
+        <FrameLayout
+            android:id="@+id/profileImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/luffy"
+                app:shapeAppearanceOverlay="@style/CircleImage" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:background="@android:color/transparent"
+                android:src="@drawable/edit_24"
+                app:tint="@color/white" />
+
+        </FrameLayout>
+        <md.attendance.sl.custom_components.CustomTextField
+            android:id="@+id/userNameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:inputType="textPersonName"
+            app:hintText="Username"
+            app:layout_constraintTop_toBottomOf="@+id/profileImage" />
+
+        <md.attendance.sl.custom_components.CustomTextField
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:inputType="textPersonName"
+            app:hintText="Username"
+            app:layout_constraintTop_toBottomOf="@+id/userNameField" />
+
+        <md.attendance.sl.custom_components.CustomTextField
+            android:id="@+id/mobileNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:inputType="textPersonName"
+            app:hintText="Username"
+            app:layout_constraintTop_toBottomOf="@+id/email" />
+        <md.attendance.sl.custom_components.CustomTextField
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:inputType="textPassword"
+            app:hintText="Username"
+            app:layout_constraintTop_toBottomOf="@+id/mobileNumber" />
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:layout_marginTop="@dimen/margin_26"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

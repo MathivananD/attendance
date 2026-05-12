@@ -1,5 +1,6 @@
 package md.attendance.sl.ui.home
 
+import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -26,6 +27,8 @@ import md.attendance.sl.di.Extension.applySafeArea
 import md.attendance.sl.ui.home.list.ChipRecycleView
 import md.attendance.sl.ui.home.list.GridAdapter
 import md.attendance.sl.ui.home.viewmodel.HomeViewModel
+import java.io.File
+import java.net.URL
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -100,7 +103,6 @@ class HomeScreen : Fragment() {
             binding.checkInOutView.checkIn = homeViewModel.getCheckInTime()
             binding.checkInOutView.checkOut = homeViewModel.getCheckOutTime()
         }
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.user.collect { user ->
@@ -108,10 +110,17 @@ class HomeScreen : Fragment() {
                     user?.let { it ->
                         val capitalized = it.name.replaceFirstChar { it.uppercase() }
                         binding.userName.text = getString(R.string.userNameText, capitalized)
+                        val image = it.profileImage ?: ""
+                        if (image.isNotEmpty()) {
+                            binding.profileImage.setImageURI(Uri.fromFile(File(image)))
+                        }
                     }
 
                 }
             }
+        }
+        binding.profileImage.setOnClickListener {
+            findNavController().navigate(R.id.profile)
         }
 
     }

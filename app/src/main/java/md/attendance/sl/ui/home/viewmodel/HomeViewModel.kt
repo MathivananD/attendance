@@ -67,7 +67,7 @@ class HomeViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            delay(4000)
+            delay(1000)
 
             _user.value = userCase.getUser()
 

@@ -1,6 +1,8 @@
 package md.attendance.sl.di
 
 import android.app.Application
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

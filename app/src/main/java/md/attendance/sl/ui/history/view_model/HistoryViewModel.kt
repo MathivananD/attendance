@@ -48,4 +48,10 @@ class HistoryViewModel @Inject constructor(private val historyUseCase: HistoryUs
             historyUseCase.updateHistory(updatedEntity)
         }
     }
+
+    fun deleteEntity(updatedEntity: HistoryEntity) {
+        viewModelScope.launch {
+            historyUseCase.deleteHistory(updatedEntity)
+        }
+    }
 }

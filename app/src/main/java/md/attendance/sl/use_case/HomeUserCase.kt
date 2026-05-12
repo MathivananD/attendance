@@ -33,7 +33,7 @@ class HomeUserCase @Inject constructor(
 
 
     suspend fun callCheckIn(historyEntity: HistoryEntity): Long  {
-        d("Historyddddddddddddd", historyEntity.toString())
+
         return historyRepository.insertHistory(historyEntity)
     }
 

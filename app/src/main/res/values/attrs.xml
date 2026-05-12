@@ -4,4 +4,26 @@
         <attr name="checkIn" format="string" />
         <attr name="checkOut" format="string" />
     </declare-styleable>
+    <declare-styleable name="TitleSubTitleItemView">
+
+        <attr
+            name="titleText"
+            format="string" />
+
+        <attr
+            name="subTitleText"
+            format="string" />
+
+    </declare-styleable>
+    <declare-styleable name="CustomTextField">
+
+        <attr
+            name="hintText"
+            format="string" />
+
+        <attr
+            name="inputTypeText"
+            format="integer" />
+
+    </declare-styleable>
 </resources>

@@ -29,13 +29,14 @@ object DateTimeHelper {
         )
     }
     fun getDateTime(
-        date: String
+        date: String,
+        pattern: String =DEFAULT_DATE_FORMAT
     ): String {
         val parsedDate = stringToDate(date) ?: return "";
 
         return formatDate(
             parsedDate,
-            DEFAULT_DATE_FORMAT
+            pattern
         )
     }
 

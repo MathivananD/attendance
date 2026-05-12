@@ -24,6 +24,7 @@ import md.attendance.sl.di.Extension.setupToolbar
 import md.attendance.sl.ui.history.recycleview.HistoryRecycleView
 import md.attendance.sl.ui.history.view_model.HistoryViewModel
 import md.attendance.sl.data.history.HistoryEntity
+import md.attendance.sl.di.DateTimeHelper
 
 @AndroidEntryPoint
 class AttendanceHistory : Fragment(), HistoryRecycleView.OnHistoryTapListener {
@@ -111,26 +112,28 @@ class AttendanceHistory : Fragment(), HistoryRecycleView.OnHistoryTapListener {
     override fun onDeleteTap(
         item: HistoryEntity
     ) {
-        showNotification()
 
-//        MaterialAlertDialogBuilder(
-//            requireContext()
-//        )
-//            .setTitle("Delete")
-//            .setMessage(
-//                "Are you sure want to delete?"
-//            )
-//            .setPositiveButton("Yes") { _, _ ->
-//
-////                viewModel.delete(item)
-//            }
-//            .setNegativeButton("No") { dialog, _ ->
-//
+
+        MaterialAlertDialogBuilder(
+            requireContext()
+        )
+            .setTitle("Delete")
+            .setMessage(
+                "Are you sure want to delete? \n\n ${DateTimeHelper.getDateTime(item.checkInTime)}"
+            )
+            .setPositiveButton("Yes") { _, _ ->
+
+                viewModel.deleteEntity(item)
 //                dialog.dismiss()
-//            }
-//            .show()
-//        viewModel.delete(item)
+            }
+            .setNegativeButton("No") { dialog, _ ->
+
+                dialog.dismiss()
+            }
+            .show()
+
     }
+
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private fun showNotification() {
 

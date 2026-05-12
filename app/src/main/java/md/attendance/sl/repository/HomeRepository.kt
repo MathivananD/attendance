@@ -8,4 +8,8 @@ class HomeRepository(val userDaos: UserDao) : HomeInterface {
     override suspend fun getUser(id: Int): UserEntity? {
         return userDaos.getUserById(id);
     }
+
+    override suspend fun updateUser(entity: UserEntity) {
+        return userDaos.updateUser(entity)
+    }
 }
