@@ -15,10 +15,10 @@ import md.attendance.sl.databinding.FragmentEditHistoryBinding
 import md.attendance.sl.di.DateTimeHelper
 import md.attendance.sl.di.Extension.setupToolbar
 import md.attendance.sl.ui.history.view_model.HistoryViewModel
-import java.text.SimpleDateFormat
+
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
+
 import kotlin.getValue
 
 @AndroidEntryPoint
@@ -63,14 +63,16 @@ class EditHistory : Fragment() {
                 checkoutTime = binding.checkOutText.text.toString()
             )
             viewModel.updateEntity(updatedEntity)
-            requireActivity().onBackPressed()
+
+            requireActivity()
+                .onBackPressedDispatcher
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentEditHistoryBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding.root

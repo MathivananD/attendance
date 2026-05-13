@@ -1,5 +1,8 @@
 package md.attendance.sl.ui.home
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
@@ -7,6 +10,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +22,15 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import md.attendance.sl.data.SessionManager
@@ -41,6 +57,21 @@ class HomeScreen : Fragment() {
 
     lateinit var binding: FragmentHomeScreenBinding
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val requestLocationPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if(isGranted){
+            getLiveLocation { latitude, longitude ->
+                homeViewModel.callCheckInCheckOut()
+            }
+        }else{
+            Toast.makeText(context,"Permission rejected", Toast.LENGTH_LONG).show()
+        }
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,6 +84,7 @@ class HomeScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.root.applySafeArea()
         binding.viewModel = homeViewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -128,6 +160,12 @@ class HomeScreen : Fragment() {
         binding.profileImage.setOnClickListener {
             findNavController().navigate(R.id.profile)
         }
+        binding.checkInCheckOutButton.setOnClickListener {
+            checkPermission({ latitude, longitude ->
+                homeViewModel.callCheckInCheckOut()
+            })
+
+        }
 
     }
 
@@ -157,5 +195,50 @@ class HomeScreen : Fragment() {
         }
     }
 
+
+    fun checkPermission(
+        onResult:
+            (
+            latitude: Double,
+            longitude: Double
+        ) -> Unit
+    ) {
+        val isGranted = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        if (!isGranted) {
+            requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            getLiveLocation(onResult)
+        }
+
+
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getLiveLocation(
+        onResult:
+            (
+            latitude: Double,
+            longitude: Double
+        ) -> Unit
+    ) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        fusedLocationClient.getCurrentLocation(
+            Priority
+                .PRIORITY_HIGH_ACCURACY,
+            null
+        ).addOnSuccessListener {
+            it?.let { location ->
+
+                onResult(
+                    location.latitude,
+                    location.longitude
+                )
+            }
+        }
+    }
 
 }

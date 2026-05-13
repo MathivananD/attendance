@@ -66,15 +66,21 @@ class ImagePickerBottomSheet(
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             dismiss()
-            val imagePath = SaveImageHandler.createImageFile(requireContext(), bitmap)
-            onCamera(imagePath)
+            if(bitmap!=null){
+                val imagePath = SaveImageHandler.createImageFile(requireContext(), bitmap)
+                onCamera(imagePath)
+            }
+
 
         }
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { bitmap ->
-            dismiss()
-            val path = SaveImageHandler.saveImageToFolder(requireContext(), bitmap!!)
-            onGallery(path)
+            if(bitmap!=null){
+                dismiss()
+                val path = SaveImageHandler.saveImageToFolder(requireContext(), bitmap!!)
+                onGallery(path)
+            }
+
         }
 
     override fun onCreateView(

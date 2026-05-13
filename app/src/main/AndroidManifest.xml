@@ -10,6 +10,9 @@
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
+        tools:ignore="PhotoAndVideoPolicy" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".application.CustomApplication"
@@ -35,10 +38,8 @@
         -->
 
         <meta-data
-            android:name=
-                "com.google.android.geo.API_KEY"
-            android:value=
-                "AIzaSyDB6laEd-CH4JE5rPm5ftMIq1VyhbN6GVg" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCG0NsUF2YWWOG79Lt_0GBmX_maa-6y87k" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
