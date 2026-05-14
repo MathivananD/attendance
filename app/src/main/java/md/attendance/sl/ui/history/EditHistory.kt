@@ -3,15 +3,18 @@ package md.attendance.sl.ui.history
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import md.attendance.sl.R
 import md.attendance.sl.databinding.FragmentEditHistoryBinding
+import md.attendance.sl.di.Constants
 import md.attendance.sl.di.DateTimeHelper
 import md.attendance.sl.di.Extension.setupToolbar
 import md.attendance.sl.ui.history.view_model.HistoryViewModel
@@ -38,8 +41,22 @@ class EditHistory : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(binding.toolbarLayout.toolbar, "Edit History", true)
+        viewModel.getAddress(requireContext(), args.history.latitude!!, args.history.longitude!!, {
+            Log.d("HistoryViewModel", "getAddress: $it")
+            binding.checkInLocation.setText(it)
+        })
+        viewModel.getAddress(
+            requireContext(),
+            args.history.checkOutLatitude!!,
+            args.history.checkOutLongitude!!,
+            {
+                Log.d("HistoryViewModel", "getAddress checkOutLatitude: $it")
+                binding.checkOutLocation.setText(it)
+            })
         binding.checkInText.setText(args.history.checkInTime)
         binding.checkOutText.setText(args.history.checkoutTime)
+        binding.checkInLocation.setText("${args.history.latitude}, ${args.history.longitude}")
+        binding.checkOutLocation.setText("${args.history.checkOutLatitude}, ${args.history.checkOutLongitude}")
         binding.checkInText.setOnClickListener {
             val dd = DateTimeHelper.stringToDate(args.history.checkInTime)
             openCalendar(dd!!, { updatedTime ->
@@ -50,6 +67,11 @@ class EditHistory : Fragment() {
             val date = DateTimeHelper.stringToDate(args.history.checkoutTime)
             if (date != null) {
                 openCalendar(date, { updatedTime ->
+                    binding.checkOutText.setText(updatedTime)
+                })
+            } else {
+                val checkInDate = DateTimeHelper.stringToDate(args.history.checkInTime)
+                openCalendar(checkInDate, { updatedTime ->
                     binding.checkOutText.setText(updatedTime)
                 })
             }
@@ -67,6 +89,26 @@ class EditHistory : Fragment() {
             requireActivity()
                 .onBackPressedDispatcher
         }
+        binding.checkInLocation.setOnClickListener {
+            val bundle =
+                Bundle()
+
+            bundle.putString(
+                Constants.LATITUDE,
+                args.history.latitude.toString()
+
+            )
+            bundle.putString(
+                Constants.LONGITUDE,
+                args.history.longitude.toString()
+
+            )
+            findNavController()
+                .navigate(
+                    R.id.mapScreen,
+                    bundle
+                )
+        }
     }
 
     override fun onCreateView(
@@ -79,9 +121,11 @@ class EditHistory : Fragment() {
     }
 
 
-    fun openCalendar(date: Date, onDateSelected: (String) -> Unit) {
+    fun openCalendar(date: Date?, onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
-        calendar.time = date
+        if (date != null) {
+            calendar.time = date
+        }
         DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->

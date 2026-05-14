@@ -1,5 +1,6 @@
 package md.attendance.sl.ui.history.view_model
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import md.attendance.sl.data.history.HistoryEntity
 import md.attendance.sl.data.ui_state.UiState
+import md.attendance.sl.di.GeocoderHelper
 import md.attendance.sl.use_case.HistoryUseCase
 import javax.inject.Inject
 
@@ -53,5 +55,17 @@ class HistoryViewModel @Inject constructor(private val historyUseCase: HistoryUs
         viewModelScope.launch {
             historyUseCase.deleteHistory(updatedEntity)
         }
+    }
+
+    fun  getAddress(context: Context, latitude: Double, longitude: Double, onResult:
+        (String) -> Unit)  {
+        var result: String?=null
+        viewModelScope.launch {
+            result= GeocoderHelper.getAddressFromLatLng(context,latitude,longitude)
+            onResult(result?:"Not found")
+//            Log.d("HistoryViewModel", "getAddress: $result")
+
+        }
+
     }
 }

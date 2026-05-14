@@ -22,6 +22,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.CurrentLocationRequest
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -40,6 +41,7 @@ import md.attendance.sl.custom_components.HorizontalSpaceItemDecoration
 import md.attendance.sl.data.ui_state.HomeState
 import md.attendance.sl.databinding.FragmentHomeScreenBinding
 import md.attendance.sl.di.Extension.applySafeArea
+import md.attendance.sl.di.LocationHelper
 import md.attendance.sl.di.LocationPermission
 import md.attendance.sl.ui.home.list.ChipRecycleView
 import md.attendance.sl.ui.home.list.GridAdapter
@@ -58,23 +60,9 @@ class HomeScreen : Fragment() {
 
     lateinit var binding: FragmentHomeScreenBinding
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private val locationPermission= LocationPermission(requireContext())
+    private lateinit var locationHelper: LocationHelper
 
-
-    private val requestLocationPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if(isGranted){
-            getLiveLocation { latitude, longitude ->
-                homeViewModel.callCheckInCheckOut()
-            }
-        }else{
-            Toast.makeText(context,"Permission rejected", Toast.LENGTH_LONG).show()
-        }
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,7 +76,7 @@ class HomeScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        locationHelper = LocationHelper(this)
         binding.root.applySafeArea()
         binding.viewModel = homeViewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -121,7 +109,7 @@ class HomeScreen : Fragment() {
             GridSpacingItemDecoration(4, spacing, false)
         )
         binding.notification.setOnClickListener {
-            findNavController().navigate(R.id.mapScreen)
+            findNavController().navigate(R.id.attendanceHistory)
         }
         binding.logOut.setOnClickListener {
             sessionManager.logout()
@@ -165,9 +153,19 @@ class HomeScreen : Fragment() {
             findNavController().navigate(R.id.profile)
         }
         binding.checkInCheckOutButton.setOnClickListener {
-            checkPermission({ latitude, longitude ->
-                homeViewModel.callCheckInCheckOut()
-            })
+            binding.buttonLoader.visibility=View.VISIBLE
+            binding.checkInCheckOutButton.visibility=View.INVISIBLE
+            locationHelper.requestPermission(
+                Manifest.permission
+                    .ACCESS_FINE_LOCATION, {
+                    locationHelper.getLiveLocation({ latitude, longitude ->
+                        homeViewModel.callCheckInCheckOut(latitude, longitude)
+                        binding.buttonLoader.visibility=View.GONE
+                        binding.checkInCheckOutButton.visibility=View.VISIBLE
+
+                    })
+                }, {})
+
 
         }
 
@@ -199,50 +197,5 @@ class HomeScreen : Fragment() {
         }
     }
 
-
-    fun checkPermission(
-        onResult:
-            (
-            latitude: Double,
-            longitude: Double
-        ) -> Unit
-    ) {
-        val isGranted = ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-        if (!isGranted) {
-            requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        } else {
-            getLiveLocation(onResult)
-        }
-
-
-    }
-
-    @SuppressLint("MissingPermission")
-    fun getLiveLocation(
-        onResult:
-            (
-            latitude: Double,
-            longitude: Double
-        ) -> Unit
-    ) {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
-        fusedLocationClient.getCurrentLocation(
-            Priority
-                .PRIORITY_HIGH_ACCURACY,
-            null
-        ).addOnSuccessListener {
-            it?.let { location ->
-
-                onResult(
-                    location.latitude,
-                    location.longitude
-                )
-            }
-        }
-    }
 
 }

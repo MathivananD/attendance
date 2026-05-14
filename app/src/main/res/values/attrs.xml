@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CheckInCheckOutView">
-        <attr name="checkIn" format="string" />
-        <attr name="checkOut" format="string" />
+
+    <declare-styleable
+        name="CheckInCheckOutView">
+
+        <attr
+            name="checkIn"
+            format="string" />
+
+        <attr
+            name="checkOut"
+            format="string" />
+
     </declare-styleable>
-    <declare-styleable name="TitleSubTitleItemView">
+
+    <declare-styleable
+        name="TitleSubTitleItemView">
 
         <attr
             name="titleText"
@@ -15,15 +26,19 @@
             format="string" />
 
     </declare-styleable>
-    <declare-styleable name="CustomTextField">
+
+    <declare-styleable
+        name="CustomTextField">
 
         <attr
             name="hintText"
             format="string" />
 
         <attr
-            name="inputTypeText"
-            format="integer" />
+            name="isEditable"
+            format="boolean" />
+
 
     </declare-styleable>
+
 </resources>

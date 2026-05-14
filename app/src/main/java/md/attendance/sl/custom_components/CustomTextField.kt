@@ -11,6 +11,7 @@ import md.attendance.sl.databinding.CustomTextFieldBinding
 import androidx.core.content.withStyledAttributes
 import com.google.android.material.textfield.TextInputLayout
 
+
 class CustomTextField @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -32,27 +33,66 @@ class CustomTextField @JvmOverloads constructor(
 
         attrs?.let {
 
-            val typedArray =
-                context.obtainStyledAttributes(
-                    it,
-                    R.styleable.CustomTextField
-                )
+            context.withStyledAttributes(
+                it,
+                R.styleable.CustomTextField
+            ) {
+                val isEditable =
+                    getBoolean(
+                        R.styleable
+                            .CustomTextField_isEditable,
+                        true
+                    )
 
-            val hint =
-                typedArray.getString(
-                    R.styleable.CustomTextField_hintText
-                )
+                if (!isEditable) {
 
-            binding.textInputLayout.hint =
-                hint
+                    binding.editText
+                        .isCursorVisible =
+                        false
 
-            typedArray.recycle()
+                    binding.editText
+                        .isFocusable =
+                        false
+
+                    binding.editText
+                        .isFocusableInTouchMode =
+                        false
+                }
+                val hint =
+                    getString(
+                        R.styleable.CustomTextField_hintText
+                    )
+
+                binding.textInputLayout.hint =
+                    hint
+
+            }
+
 
             context.withStyledAttributes(
                 it,
                 intArrayOf(android.R.attr.inputType)
             ) {
+                val isEditable =
+                    getBoolean(
+                        R.styleable
+                            .CustomTextField_isEditable,
+                        true
+                    )
+                if (!isEditable) {
 
+                    binding.editText
+                        .isCursorVisible =
+                        false
+
+                    binding.editText
+                        .isFocusable =
+                        false
+
+                    binding.editText
+                        .isFocusableInTouchMode =
+                        false
+                }
                 val inputType =
                     getInt(
                         0,

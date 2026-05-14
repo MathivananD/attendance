@@ -60,6 +60,9 @@ class HomeViewModel @Inject constructor(
         loadUser()
     }
 
+   fun resetValue(){
+       _runningTime.value="00:00:00"
+   }
     fun loadUser() {
 //        if (isUserLoaded || _state.value == HomeState.Loading) return
 
@@ -77,6 +80,9 @@ class HomeViewModel @Inject constructor(
             if (currentEntity == null) {
                 _isCheckedIn.value =
                     CheckInOutEnum.NONE
+
+                resetValue()
+                stopTimer()
             } else if (currentEntity.checkoutTime.isEmpty()) {
                 _isCheckedIn.value =
                     CheckInOutEnum.CHECKEDIN
@@ -155,25 +161,33 @@ class HomeViewModel @Inject constructor(
         return userCase.getTodayCheckIn(currentDate)
     }
 
-    fun callCheckInCheckOut() {
+    fun callCheckInCheckOut(latitude: Double, longitude: Double) {
+
         viewModelScope.launch {
             val history = getCurrentCheckIn()
 
             if (history == null) {
-                callCheckIn()
+                callCheckIn(latitude = latitude,
+                    longitude = longitude)
             } else {
-                callCheckOut(history)
+                callCheckOut(history.copy(
+                    checkOutLatitude = latitude,
+                    checkOutLongitude = longitude
+                ))
             }
         }
     }
 
-    private suspend fun callCheckIn() {
+    private suspend fun callCheckIn(latitude: Double? = null, longitude: Double? = null) {
         val currentTime = dateTimeHelper.getCurrentDateTime()
         val history = HistoryEntity(
             id = 0,
             checkInTime = currentTime,
             checkoutTime = "",
-            userId = userCase.getCurrentUserId()
+            userId = userCase.getCurrentUserId(),
+            latitude=latitude,
+            longitude=longitude
+
         )
         val id = userCase.callCheckIn(history)
         _todayHistoryEntity.value = HistoryEntity(

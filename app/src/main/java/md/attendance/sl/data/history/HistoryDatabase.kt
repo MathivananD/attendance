@@ -7,15 +7,15 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [HistoryEntity::class], version = 2, exportSchema = false)
+@Database(entities = [HistoryEntity::class], version = 3, exportSchema = false)
 abstract class HistoryDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 
     companion object {
         @Volatile
         private var INSTANCE: HistoryDatabase? = null
-        val MIGRATION_1_2 =
-            object : Migration(1, 2) {
+        val MIGRATION_2_3 =
+            object : Migration(2, 3) {
 
                 override fun migrate(
                     db: SupportSQLiteDatabase,
@@ -24,14 +24,14 @@ abstract class HistoryDatabase : RoomDatabase() {
                     db.execSQL(
                         """
                 ALTER TABLE history_table
-                ADD COLUMN lat TEXT
+                ADD COLUMN checkOutLatitude REAL
                 """
                     )
 
                     db.execSQL(
                         """
                 ALTER TABLE history_table
-                ADD COLUMN long TEXT
+                ADD COLUMN checkOutLongitude REAL
                 """
                     )
                 }
@@ -43,7 +43,7 @@ abstract class HistoryDatabase : RoomDatabase() {
                     context.applicationContext,
                     HistoryDatabase::class.java,
                     "history_database"
-                ).addMigrations(MIGRATION_1_2).build()
+                ).addMigrations(MIGRATION_2_3).build()
                 INSTANCE = instance
                 instance
             }
