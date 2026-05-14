@@ -12,5 +12,7 @@ data  class HistoryEntity(
     val id: Int = 0,
     var checkInTime: String,
     var checkoutTime: String,
-    val userId: Int=-1
+    val userId: Int=-1,
+    val lat: Double=0.0,
+    val long: Double=0.0
 ): Parcelable

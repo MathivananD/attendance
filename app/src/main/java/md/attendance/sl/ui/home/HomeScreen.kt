@@ -40,6 +40,7 @@ import md.attendance.sl.custom_components.HorizontalSpaceItemDecoration
 import md.attendance.sl.data.ui_state.HomeState
 import md.attendance.sl.databinding.FragmentHomeScreenBinding
 import md.attendance.sl.di.Extension.applySafeArea
+import md.attendance.sl.di.LocationPermission
 import md.attendance.sl.ui.home.list.ChipRecycleView
 import md.attendance.sl.ui.home.list.GridAdapter
 import md.attendance.sl.ui.home.viewmodel.HomeViewModel
@@ -58,6 +59,9 @@ class HomeScreen : Fragment() {
     lateinit var binding: FragmentHomeScreenBinding
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val locationPermission= LocationPermission(requireContext())
+
 
     private val requestLocationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()

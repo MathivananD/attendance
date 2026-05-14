@@ -19,10 +19,10 @@ abstract class UserDatabase : RoomDatabase() {
             object : Migration(1, 2) {
 
                 override fun migrate(
-                    database: SupportSQLiteDatabase
+                    db: SupportSQLiteDatabase
                 ) {
 
-                    database.execSQL(
+                    db.execSQL(
                         """
                 ALTER TABLE user_table
                 ADD COLUMN profileImage  TEXT
