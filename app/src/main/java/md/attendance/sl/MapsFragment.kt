@@ -1,6 +1,7 @@
 package md.attendance.sl
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import md.attendance.sl.databinding.FragmentMapsBinding
+import md.attendance.sl.di.Constants
+import md.attendance.sl.di.Extension.setupToolbar
 
 class MapsFragment :
     Fragment(),
@@ -50,7 +53,7 @@ class MapsFragment :
             view,
             savedInstanceState
         )
-
+        setupToolbar(binding.toolbarLayout.toolbar, "Location", true)
         val mapFragment =
             SupportMapFragment.newInstance()
 
@@ -70,24 +73,44 @@ class MapsFragment :
     override fun onMapReady(
         map: GoogleMap
     ) {
-
+        val latitude: String? =
+            arguments
+                ?.getString(
+                    Constants.LATITUDE
+                )
+        val longitude: String? =
+            arguments
+                ?.getString(
+                    Constants.LONGITUDE
+                )
         googleMap = map
 
         val coimbatore =
             LatLng(
-                11.0168,
-                76.9558
+                latitude!!.toDouble(),
+                longitude!!.toDouble()
             )
 
-        googleMap.addMarker(
+        var selectedMarker = googleMap.addMarker(
             MarkerOptions()
                 .position(
                     coimbatore
                 )
                 .title(
-                    "Coimbatore"
+                    "Live location"
                 )
         )
+        googleMap.setOnMapClickListener {
+            selectedMarker?.remove()
+            selectedMarker = googleMap.addMarker(
+                MarkerOptions()
+                    .position(
+                        it
+                    )
+
+            )
+
+        }
 
         googleMap.animateCamera(
             CameraUpdateFactory
@@ -103,4 +126,6 @@ class MapsFragment :
 
         _binding = null
     }
+
+
 }

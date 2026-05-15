@@ -20,4 +20,5 @@
     <string name="edit">edit</string>
     <string name="check_in">Check In</string>
     <string name="check_out">Check out</string>
+    <string name="confirm">Confirm</string>
 </resources>

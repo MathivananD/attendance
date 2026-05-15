@@ -89,7 +89,8 @@ class EditHistory : Fragment() {
             requireActivity()
                 .onBackPressedDispatcher
         }
-        binding.checkInLocation.setOnClickListener {
+        binding.checkInLocation.onTap {
+            Log.d("dddddddddddddd", "sdsdf")
             val bundle =
                 Bundle()
 

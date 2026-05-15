@@ -53,6 +53,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:hint="Check In"
+                android:gravity="top|start"
                 android:inputType="none"
                 android:longClickable="false" />
 

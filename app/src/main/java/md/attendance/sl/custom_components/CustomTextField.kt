@@ -46,6 +46,8 @@ class CustomTextField @JvmOverloads constructor(
 
                 if (!isEditable) {
 
+
+
                     binding.editText
                         .isCursorVisible =
                         false
@@ -55,8 +57,17 @@ class CustomTextField @JvmOverloads constructor(
                         false
 
                     binding.editText
-                        .isFocusableInTouchMode =
+                        .isClickable =
+                        true
+
+                    binding.editText
+                        .isLongClickable =
                         false
+
+
+//                    binding.editText
+//                        .isFocusableInTouchMode =
+//                        false
                 }
                 val hint =
                     getString(
@@ -73,26 +84,7 @@ class CustomTextField @JvmOverloads constructor(
                 it,
                 intArrayOf(android.R.attr.inputType)
             ) {
-                val isEditable =
-                    getBoolean(
-                        R.styleable
-                            .CustomTextField_isEditable,
-                        true
-                    )
-                if (!isEditable) {
 
-                    binding.editText
-                        .isCursorVisible =
-                        false
-
-                    binding.editText
-                        .isFocusable =
-                        false
-
-                    binding.editText
-                        .isFocusableInTouchMode =
-                        false
-                }
                 val inputType =
                     getInt(
                         0,
@@ -121,6 +113,17 @@ class CustomTextField @JvmOverloads constructor(
 
     fun setText(value: String) {
         binding.editText.setText(value)
+    }
+
+    fun onTap(
+        action: () -> Unit
+    ) {
+
+        binding.editText
+            .setOnClickListener {
+
+                action()
+            }
     }
 
 
