@@ -1,10 +1,12 @@
-package md.attendance.sl
+package md.attendance.sl.ui.staggered
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import md.attendance.sl.R
 
 class PhotoRVAdapter(
     // on below line we are passing variables as list
@@ -18,7 +20,7 @@ class PhotoRVAdapter(
         // which we have created for our recycler view.
         // on below line we are inflating our layout file.
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.staggered_layout,
+            R.layout.photo_rv_item,
             parent, false
         )
         // at last we are returning our view holder

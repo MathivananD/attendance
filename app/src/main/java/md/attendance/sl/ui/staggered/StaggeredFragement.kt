@@ -1,4 +1,4 @@
-package com.gtappdevelopers.kotlingfgproject
+package md.attendance.sl.ui.staggered
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import md.attendance.sl.PhotoRVAdapter
 import md.attendance.sl.databinding.StaggeredLayoutBinding
 
 class StaggeredFragement : Fragment() {
