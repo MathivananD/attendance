@@ -1,17 +1,22 @@
 package md.attendance.sl
 
+import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresPermission
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import md.attendance.sl.data.model.LocationResult
 import md.attendance.sl.databinding.FragmentMapsBinding
 import md.attendance.sl.di.Constants
 import md.attendance.sl.di.Extension.setupToolbar
@@ -28,6 +33,9 @@ class MapsFragment :
 
     private lateinit var googleMap:
             GoogleMap
+
+    private lateinit var latLng:
+            LatLng
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,8 +76,23 @@ class MapsFragment :
         mapFragment.getMapAsync(
             this
         )
+        binding.selectLocationFab.setOnClickListener {
+            findNavController()
+                .previousBackStackEntry
+                ?.savedStateHandle
+                ?.set(
+                    Constants.LOCATION,
+                    LocationResult(latLng.latitude, latLng.longitude)
+                )
+
+            findNavController()
+                .popBackStack()
+        }
     }
 
+    private var selectedMarker: Marker? = null
+
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     override fun onMapReady(
         map: GoogleMap
     ) {
@@ -83,42 +106,26 @@ class MapsFragment :
                 ?.getString(
                     Constants.LONGITUDE
                 )
+        if (latitude == null || longitude == null) {
+            latLng = LatLng(0.0, 0.0)
+        } else {
+            latLng = LatLng(latitude.toDouble(), longitude.toDouble())
+        }
+
         googleMap = map
 
-        val coimbatore =
-            LatLng(
-                latitude!!.toDouble(),
-                longitude!!.toDouble()
-            )
+        googleMap.isMyLocationEnabled = true
+        changeMarkerPosition(latLng)
 
-        var selectedMarker = googleMap.addMarker(
-            MarkerOptions()
-                .position(
-                    coimbatore
-                )
-                .title(
-                    "Live location"
-                )
-        )
+
         googleMap.setOnMapClickListener {
             selectedMarker?.remove()
-            selectedMarker = googleMap.addMarker(
-                MarkerOptions()
-                    .position(
-                        it
-                    )
-
-            )
+            latLng = LatLng(it.latitude, it.longitude)
+            changeMarkerPosition(it)
 
         }
 
-        googleMap.animateCamera(
-            CameraUpdateFactory
-                .newLatLngZoom(
-                    coimbatore,
-                    15f
-                )
-        )
+
     }
 
     override fun onDestroyView() {
@@ -127,5 +134,28 @@ class MapsFragment :
         _binding = null
     }
 
+    fun changeMarkerPosition(latitude: LatLng) {
 
+
+        selectedMarker?.remove()
+
+        selectedMarker = googleMap.addMarker(
+            MarkerOptions()
+                .position(
+                    latitude
+                )
+                .title(
+                    "Live location"
+                )
+        )
+
+
+        googleMap.animateCamera(
+            CameraUpdateFactory
+                .newLatLngZoom(
+                    latitude,
+                    15f
+                )
+        )
+    }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -56,16 +57,64 @@ class HistoryViewModel @Inject constructor(private val historyUseCase: HistoryUs
             historyUseCase.deleteHistory(updatedEntity)
         }
     }
+    // Keep track of the model being edited inside the ViewModel
+    var editedModel: HistoryEntity? = null
+        private set
 
-    fun  getAddress(context: Context, latitude: Double, longitude: Double, onResult:
-        (String) -> Unit)  {
-        var result: String?=null
+    val checkInAddress = MutableStateFlow<String?>(null)
+    val checkOutAddress = MutableStateFlow<String?>(null)
+
+    fun initializeModel(context: Context,initialHistory: HistoryEntity) {
+        if (editedModel == null) {
+            editedModel = initialHistory.copy()
+            // Fetch addresses ONLY ONCE when model is first initialized
+            fetchAddresses(context,initialHistory)
+        }
+    }
+
+    fun updateCheckInLocation(lat: Double, lng: Double, context: Context) {
+        editedModel = editedModel?.copy(latitude = lat, longitude = lng)
         viewModelScope.launch {
-            result= GeocoderHelper.getAddressFromLatLng(context,latitude,longitude)
-            onResult(result?:"Not found")
-//            Log.d("HistoryViewModel", "getAddress: $result")
+            checkInAddress.value = getAddress(context, lat, lng)
+        }
+    }
 
+    fun updateCheckOutLocation(lat: Double, lng: Double, context: Context) {
+        editedModel = editedModel?.copy(checkOutLatitude = lat, checkOutLongitude = lng)
+        viewModelScope.launch {
+            checkOutAddress.value = getAddress(context, lat, lng)
+        }
+    }
+
+    fun updateTimes(checkIn: String, checkOut: String) {
+        editedModel = editedModel?.copy(checkInTime = checkIn, checkoutTime = checkOut)
+    }
+
+    private fun fetchAddresses(context: Context,history: HistoryEntity) {
+        viewModelScope.launch {
+            checkInAddress.value = getAddress(context, history.latitude, history.longitude)
+            checkOutAddress.value = getAddress(context, history.checkOutLatitude, history.checkOutLongitude)
+        }
+    }
+    suspend fun getAddress(
+        context: Context,
+        latitude: Double?,
+        longitude: Double?
+    ): String? {
+
+        if (
+            latitude == null ||
+            longitude == null
+        ) {
+
+            return null
         }
 
+        return GeocoderHelper
+            .getAddressFromLatLng(
+                context,
+                latitude,
+                longitude
+            )
     }
 }

@@ -1,0 +1,76 @@
+package com.gtappdevelopers.kotlingfgproject
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import md.attendance.sl.PhotoRVAdapter
+import md.attendance.sl.databinding.StaggeredLayoutBinding
+
+class StaggeredFragement : Fragment() {
+
+    private var _binding: StaggeredLayoutBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var photoRVAdapter: PhotoRVAdapter
+    private lateinit var photoList: ArrayList<String>
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = StaggeredLayoutBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Initialize list
+        photoList = ArrayList()
+
+        // Adapter
+        photoRVAdapter = PhotoRVAdapter(photoList)
+
+        // Staggered Grid Layout Manager
+        val staggeredGridLayoutManager =
+            StaggeredGridLayoutManager(
+                2,
+                LinearLayoutManager.VERTICAL
+            )
+
+        binding.idRVPhotos.layoutManager =
+            staggeredGridLayoutManager
+
+        binding.idRVPhotos.adapter =
+            photoRVAdapter
+
+        // Add Images
+        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/2DTranslationinComputerGraphics/2DTranslationinComputerGraphics20220628122713-small.png")
+        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/PythonProgramforFibonacciSeries/FibonacciseriesinPython20220627183541-small.png")
+        photoList.add("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg")
+        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/PerformCRUDOperationusingFirebaseinFlutter/PerformCRUDOperationusingFirebaseinFlutter20220627152121-small.png")
+        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/CProgramtoConvertLowercasetoUppercaseviceversa/CProgramtoConvertLowercasetoUppercase20220627145001-small.png")
+        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/OptimalPageReplacementAlgorithminOS/OptimalPageReplacement20220627124822-small.png")
+        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/JavaProgramtoFindQuotientRemainder/JavaProgramtoFindQuotientandRemainder20220626125601-small.png")
+        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/FirstandFollowinCompilerDesign/FirstFollowinCompilerDesign20220624172015-small.png")
+
+        // Refresh adapter
+        photoRVAdapter.notifyDataSetChanged()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}

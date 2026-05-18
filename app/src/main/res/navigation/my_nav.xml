@@ -90,4 +90,12 @@
         tools:layout="@layout/fragment_maps">
 
     </fragment>
+
+    <fragment
+        android:id="@+id/staggeredScreen"
+        android:name="md.attendance.sl.ui.staggered.StaggeredFragement"
+        android:label="dfsdfn"
+        tools:layout="@layout/staggered_layout">
+
+    </fragment>
 </navigation>

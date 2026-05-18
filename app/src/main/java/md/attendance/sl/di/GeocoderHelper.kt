@@ -14,8 +14,12 @@ object GeocoderHelper {
         latitude: Double,
         longitude: Double
     ): String? =
-        try {
-            withContext(Dispatchers.IO){
+        withContext(
+            Dispatchers.IO
+        ) {
+
+            try {
+
                 val geocoder =
                     Geocoder(
                         context,
@@ -23,21 +27,27 @@ object GeocoderHelper {
                     )
 
                 val addresses =
-                    geocoder.getFromLocation(
-                        latitude,
-                        longitude,
-                        1
-                    )
+                    geocoder
+                        .getFromLocation(
+                            latitude,
+                            longitude,
+                            1
+                        )
+
                 addresses
                     ?.firstOrNull()
                     ?.getAddressLine(0)
+
+            } catch (
+                e: Exception
+            ) {
+
+                Log.e(
+                    "GeocoderHelper",
+                    "Error: ${e.message}"
+                )
+
+                null
             }
-        }catch (
-            e: Exception
-        ) {
-            Log.e("GeocoderHelper", "Error getting address: ${e.message}")
-            null
         }
-
-
 }

@@ -9,11 +9,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import md.attendance.sl.R
+import md.attendance.sl.data.history.HistoryEntity
+import md.attendance.sl.data.model.LocationResult
 import md.attendance.sl.databinding.FragmentEditHistoryBinding
+import md.attendance.sl.di.AttendanceType
 import md.attendance.sl.di.Constants
 import md.attendance.sl.di.DateTimeHelper
 import md.attendance.sl.di.Extension.setupToolbar
@@ -30,8 +37,10 @@ class EditHistory : Fragment() {
     lateinit var binding: FragmentEditHistoryBinding
     val viewModel: HistoryViewModel by viewModels()
 
+    private var tappedType: AttendanceType? = null
     private val args:
             EditHistoryArgs by navArgs()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,76 +49,36 @@ class EditHistory : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupToolbar(binding.toolbarLayout.toolbar, "Edit History", true)
-        viewModel.getAddress(requireContext(), args.history.latitude!!, args.history.longitude!!, {
-            Log.d("HistoryViewModel", "getAddress: $it")
-            binding.checkInLocation.setText(it)
-        })
-        viewModel.getAddress(
-            requireContext(),
-            args.history.checkOutLatitude!!,
-            args.history.checkOutLongitude!!,
-            {
-                Log.d("HistoryViewModel", "getAddress checkOutLatitude: $it")
-                binding.checkOutLocation.setText(it)
-            })
-        binding.checkInText.setText(args.history.checkInTime)
-        binding.checkOutText.setText(args.history.checkoutTime)
-        binding.checkInLocation.setText("${args.history.latitude}, ${args.history.longitude}")
-        binding.checkOutLocation.setText("${args.history.checkOutLatitude}, ${args.history.checkOutLongitude}")
-        binding.checkInText.setOnClickListener {
-            val dd = DateTimeHelper.stringToDate(args.history.checkInTime)
-            openCalendar(dd!!, { updatedTime ->
-                binding.checkInText.setText(updatedTime)
-            })
-        }
-        binding.checkOutText.setOnClickListener {
-            val date = DateTimeHelper.stringToDate(args.history.checkoutTime)
-            if (date != null) {
-                openCalendar(date, { updatedTime ->
-                    binding.checkOutText.setText(updatedTime)
-                })
-            } else {
-                val checkInDate = DateTimeHelper.stringToDate(args.history.checkInTime)
-                openCalendar(checkInDate, { updatedTime ->
-                    binding.checkOutText.setText(updatedTime)
-                })
+
+        viewModel.initializeModel(requireContext(), args.history)
+        setInitialData()
+        val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
+        savedStateHandle?.getLiveData<LocationResult>(Constants.LOCATION)
+            ?.observe(viewLifecycleOwner) { address ->
+                address?.let {
+                    when (tappedType) {
+                        AttendanceType.CHECK_IN -> viewModel.updateCheckInLocation(
+                            it.latitude,
+                            it.longitude,
+                            requireContext()
+                        )
+
+                        AttendanceType.CHECK_OUT -> viewModel.updateCheckOutLocation(
+                            it.latitude,
+                            it.longitude,
+                            requireContext()
+                        )
+
+                        else -> {}
+                    }
+                    tappedType = null
+                    // Clear it so it doesn't re-trigger on config change
+                    savedStateHandle.remove<LocationResult>(Constants.LOCATION)
+                }
             }
-
-        }
-        binding.updateBtn.setOnClickListener {
-
-            val updatedEntity = args.history.copy(
-
-                checkInTime = binding.checkInText.text.toString(),
-                checkoutTime = binding.checkOutText.text.toString()
-            )
-            viewModel.updateEntity(updatedEntity)
-
-            requireActivity()
-                .onBackPressedDispatcher
-        }
-        binding.checkInLocation.onTap {
-            Log.d("dddddddddddddd", "sdsdf")
-            val bundle =
-                Bundle()
-
-            bundle.putString(
-                Constants.LATITUDE,
-                args.history.latitude.toString()
-
-            )
-            bundle.putString(
-                Constants.LONGITUDE,
-                args.history.longitude.toString()
-
-            )
-            findNavController()
-                .navigate(
-                    R.id.mapScreen,
-                    bundle
-                )
-        }
+        setupClickListeners()
     }
 
     override fun onCreateView(
@@ -121,6 +90,88 @@ class EditHistory : Fragment() {
         return binding.root
     }
 
+    private fun setInitialData() {
+
+        val currentModel = viewModel.editedModel!!
+        // 3. Collect UI Address States securely
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                Log.d("dddddddddddddddd", "fffffff")
+                launch {
+                    viewModel.checkInAddress.collect { address ->
+                        binding.checkInLocation.setText(
+                            address ?: "${currentModel.latitude}, ${currentModel.longitude}"
+                        )
+                    }
+                }
+                launch {
+                    viewModel.checkOutAddress.collect { address ->
+                        binding.checkOutLocation.setText(
+                            address
+                                ?: "${currentModel.checkOutLatitude}, ${currentModel.checkOutLongitude}"
+                        )
+                    }
+                }
+            }
+        }
+
+
+        binding.checkInText.setText(currentModel.checkInTime)
+        binding.checkOutText.setText(currentModel.checkoutTime)
+        binding.checkInLocation.setText("${currentModel.latitude}, ${currentModel.longitude}")
+        binding.checkOutLocation.setText("${currentModel.checkOutLatitude}, ${currentModel.checkOutLongitude}")
+
+
+    }
+
+    private fun setupClickListeners() {
+        binding.checkInText.setOnClickListener {
+            val dd = DateTimeHelper.stringToDate(viewModel.editedModel!!.checkInTime)
+            openCalendar(dd) { updatedTime -> binding.checkInText.setText(updatedTime) }
+        }
+
+        binding.checkOutText.setOnClickListener {
+            val date = DateTimeHelper.stringToDate(viewModel.editedModel!!.checkoutTime)
+                ?: DateTimeHelper.stringToDate(viewModel.editedModel!!.checkInTime)
+            openCalendar(date) { updatedTime -> binding.checkOutText.setText(updatedTime) }
+        }
+
+        binding.checkInLocation.onTap {
+            tappedType = AttendanceType.CHECK_IN
+            navigateToMap(viewModel.editedModel?.latitude, viewModel.editedModel?.longitude)
+        }
+
+        binding.checkOutLocation.onTap {
+            tappedType = AttendanceType.CHECK_OUT
+            navigateToMap(
+                viewModel.editedModel?.checkOutLatitude,
+                viewModel.editedModel?.checkOutLongitude
+            )
+        }
+
+        binding.updateBtn.setOnClickListener {
+            viewModel.updateTimes(
+                binding.checkInText.text.toString(),
+                binding.checkOutText.text.toString()
+            )
+            viewModel.editedModel?.let { viewModel.updateEntity(it) }
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    private fun navigateToMap(lat: Double?, lng: Double?) {
+        val bundle = Bundle().apply {
+            putString(Constants.LATITUDE, lat?.toString())
+            putString(Constants.LONGITUDE, lng?.toString())
+        }
+        findNavController().navigate(R.id.mapScreen, bundle)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+    }
 
     fun openCalendar(date: Date?, onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()

@@ -75,6 +75,9 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
 
+    /// picoso
+    implementation(libs.picasso)
+
     // shared preference
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.core.ktx)
