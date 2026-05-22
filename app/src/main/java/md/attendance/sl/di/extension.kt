@@ -43,18 +43,18 @@ object Extension {
             insets
         }
         toolbar.title = title
+
+        toolbar.setNavigationIcon(
+            R.drawable.baseline_arrow_back_ios_24
+        )
         toolbar.doOnLayout {
             val navButton = toolbar.children
                 .filterIsInstance<ImageButton>()
                 .firstOrNull()
 
-            navButton?.setPadding(0, 0, 0, 20) // left, top, right, bottom
+            navButton?.setPadding(0, 0, 0, 0) // left, top, right, bottom
 
         }
-        toolbar.setNavigationIcon(
-            R.drawable.baseline_arrow_back_ios_24
-        )
-
         toolbar.navigationIcon?.setTint(
             ContextCompat.getColor(requireContext(), R.color.white)
         )
