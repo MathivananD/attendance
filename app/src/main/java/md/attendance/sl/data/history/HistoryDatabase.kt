@@ -14,13 +14,25 @@ abstract class HistoryDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: HistoryDatabase? = null
-        val MIGRATION_2_3 =
-            object : Migration(2, 3) {
+        val MIGRATION_1_3 =
+            object : Migration(1, 3) {
 
                 override fun migrate(
                     db: SupportSQLiteDatabase,
                 ) {
+                    db.execSQL(
+                        """
+                ALTER TABLE history_table
+                ADD COLUMN latitude REAL
+                """
+                    )
 
+                    db.execSQL(
+                        """
+                ALTER TABLE history_table
+                ADD COLUMN longitude REAL
+                """
+                    )
                     db.execSQL(
                         """
                 ALTER TABLE history_table
@@ -43,7 +55,7 @@ abstract class HistoryDatabase : RoomDatabase() {
                     context.applicationContext,
                     HistoryDatabase::class.java,
                     "history_database"
-                ).addMigrations(MIGRATION_2_3).build()
+                ).addMigrations(MIGRATION_1_3).build()
                 INSTANCE = instance
                 instance
             }

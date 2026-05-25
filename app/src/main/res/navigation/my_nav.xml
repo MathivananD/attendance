@@ -85,7 +85,7 @@
 
     <fragment
         android:id="@+id/mapScreen"
-        android:name="md.attendance.sl.MapsFragment"
+        android:name="md.attendance.sl.ui.map.MapsFragment"
         android:label="fragment_map_screen"
         tools:layout="@layout/fragment_maps">
 

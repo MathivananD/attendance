@@ -1,5 +1,6 @@
 package md.attendance.sl.ui.staggered
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,7 @@ class StaggeredFragement : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,13 +57,13 @@ class StaggeredFragement : Fragment() {
             photoRVAdapter
 
         // Add Images
-        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/2DTranslationinComputerGraphics/2DTranslationinComputerGraphics20220628122713-small.png")
-        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/PythonProgramforFibonacciSeries/FibonacciseriesinPython20220627183541-small.png")
         photoList.add("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg")
-        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/PerformCRUDOperationusingFirebaseinFlutter/PerformCRUDOperationusingFirebaseinFlutter20220627152121-small.png")
-        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/CProgramtoConvertLowercasetoUppercaseviceversa/CProgramtoConvertLowercasetoUppercase20220627145001-small.png")
-        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/OptimalPageReplacementAlgorithminOS/OptimalPageReplacement20220627124822-small.png")
-        photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/JavaProgramtoFindQuotientRemainder/JavaProgramtoFindQuotientandRemainder20220626125601-small.png")
+        photoList.add("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg")
+        photoList.add("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg")
+        photoList.add("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg")
+        photoList.add("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg")
+        photoList.add("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg")
+        photoList.add("https://pbs.twimg.com/media/FV6-TWhUsAY92R_.jpg")
         photoList.add("https://videocdn.geeksforgeeks.org/geeksforgeeks/FirstandFollowinCompilerDesign/FirstFollowinCompilerDesign20220624172015-small.png")
 
         // Refresh adapter
