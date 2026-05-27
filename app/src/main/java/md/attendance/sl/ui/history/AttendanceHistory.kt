@@ -34,8 +34,13 @@ class AttendanceHistory : Fragment(), HistoryRecycleView.OnHistoryTapListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupToolbar(binding.toolbarLayout.toolbar, "Attendance History", true)
         binding.chipRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val space = resources.getDimensionPixelSize(R.dimen.spacing_12)
+        binding.chipRecyclerView.addItemDecoration(
+            VerticalSpaceItemDecoration(space)
+        )
         viewModel.load()
         observeUi()
 
@@ -62,11 +67,6 @@ class AttendanceHistory : Fragment(), HistoryRecycleView.OnHistoryTapListener {
                     binding.progressBar.progressBar.visibility = View.GONE
                     binding.scrollView.visibility = View.VISIBLE
                     binding.chipRecyclerView.adapter = HistoryRecycleView(it.data, this)
-
-                    val space = resources.getDimensionPixelSize(R.dimen.spacing_12)
-                    binding.chipRecyclerView.addItemDecoration(
-                        VerticalSpaceItemDecoration(space)
-                    )
                 }
 
                 is UiState.Error -> {
@@ -74,7 +74,6 @@ class AttendanceHistory : Fragment(), HistoryRecycleView.OnHistoryTapListener {
                 }
 
                 else -> {
-
                 }
             }
         }

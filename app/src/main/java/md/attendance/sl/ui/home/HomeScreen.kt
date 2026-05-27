@@ -12,8 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -32,14 +34,17 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import md.attendance.sl.data.SessionManager
 import md.attendance.sl.R
 import md.attendance.sl.custom_components.GridSpacingItemDecoration
 import md.attendance.sl.custom_components.HorizontalSpaceItemDecoration
+import md.attendance.sl.data.history.HistoryEntity
 import md.attendance.sl.data.ui_state.HomeState
 import md.attendance.sl.databinding.FragmentHomeScreenBinding
+import md.attendance.sl.di.DateTimeHelper
 import md.attendance.sl.di.Extension.applySafeArea
 import md.attendance.sl.di.LocationHelper
 import md.attendance.sl.di.LocationPermission
@@ -109,18 +114,9 @@ class HomeScreen : Fragment() {
             GridSpacingItemDecoration(4, spacing, false)
         )
         binding.notification.setOnClickListener {
-            findNavController().navigate(R.id.attendanceHistory)
+
         }
-        binding.logOut.setOnClickListener {
-            sessionManager.logout()
-            findNavController().navigate(
-                R.id.loginFragment,
-                null,
-                NavOptions.Builder()
-                    .setPopUpTo(R.id.my_nav, true)
-                    .build()
-            )
-        }
+
         binding.swipeRefresh
             .setOnRefreshListener {
 
@@ -149,19 +145,21 @@ class HomeScreen : Fragment() {
                 }
             }
         }
+        sideDrawerNavigation()
         binding.profileImage.setOnClickListener {
-            findNavController().navigate(R.id.profile)
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+
         }
         binding.checkInCheckOutButton.setOnClickListener {
-            binding.buttonLoader.visibility=View.VISIBLE
-            binding.checkInCheckOutButton.visibility=View.INVISIBLE
+            binding.buttonLoader.visibility = View.VISIBLE
+            binding.checkInCheckOutButton.visibility = View.INVISIBLE
             locationHelper.requestPermission(
                 Manifest.permission
                     .ACCESS_FINE_LOCATION, {
                     locationHelper.getLiveLocation({ latitude, longitude ->
                         homeViewModel.callCheckInCheckOut(latitude, longitude)
-                        binding.buttonLoader.visibility=View.GONE
-                        binding.checkInCheckOutButton.visibility=View.VISIBLE
+                        binding.buttonLoader.visibility = View.GONE
+                        binding.checkInCheckOutButton.visibility = View.VISIBLE
 
                     })
                 }, {})
@@ -197,5 +195,60 @@ class HomeScreen : Fragment() {
         }
     }
 
+     fun logOut(
+
+    ) {
+
+
+        MaterialAlertDialogBuilder(
+            requireContext()
+        )
+            .setTitle("Delete")
+            .setMessage(
+                "Are you sure want to Logout? "
+            )
+            .setPositiveButton("Yes") { _, _ ->
+
+                sessionManager.logout()
+                findNavController().navigate(
+                    R.id.loginFragment,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(R.id.my_nav, true)
+                        .build()
+                )
+            }
+            .setNegativeButton("No") { dialog, _ ->
+
+                dialog.dismiss()
+            }
+            .show()
+
+    }
+    fun sideDrawerNavigation() {
+        binding.navigationView.setNavigationItemSelectedListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            when (it.itemId) {
+                R.id.nav_home -> {
+
+                }
+
+                R.id.nav_profile -> {
+                    findNavController().navigate(R.id.profile)
+                }
+
+                R.id.attendanceHistory -> {
+                    findNavController().navigate(R.id.attendanceHistory)
+                }
+
+                R.id.nav_logout -> {
+                    logOut()
+                }
+            }
+
+
+            true
+        }
+    }
 
 }

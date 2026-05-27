@@ -44,28 +44,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:background="@drawable/search_bg"
             android:orientation="vertical"
+            android:layout_margin="@dimen/margin_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarLayout">
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchView"
+                android:background="@android:color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:background="@android:color/white"
-                android:elevation="8dp"
+                android:divider="@android:color/transparent"
+                android:elevation="0dp"
+
                 android:queryHint="Search location"
                 app:iconifiedByDefault="false" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSearch"
+                android:layout_margin="@dimen/margin_8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                 />
+                android:visibility="gone"
+                android:background="@android:color/white" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

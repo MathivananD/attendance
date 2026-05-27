@@ -17,11 +17,6 @@ class HorizontalSpaceItemDecoration(private val space: Int) :
 
         if (position != RecyclerView.NO_POSITION) {
             outRect.right = space
-
-            // optional: first item left spacing
-            if (position == 0) {
-//                outRect.left = space
-            }
         }
     }
 }
@@ -36,14 +31,10 @@ class VerticalSpaceItemDecoration(private val space: Int) :
         state: RecyclerView.State
     ) {
         val position = parent.getChildAdapterPosition(view)
+        val itemCount = state.itemCount
 
         if (position != RecyclerView.NO_POSITION) {
-            outRect.bottom = space
-
-            // optional: first item left spacing
-            if (position == 0) {
-//                outRect.left = space
-            }
+            outRect.bottom = if (position == itemCount - 1) 0 else space
         }
     }
 }

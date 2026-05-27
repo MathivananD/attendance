@@ -73,6 +73,26 @@ class MapsFragment :
             savedInstanceState
         )
         binding.rvSearch.layoutManager = LinearLayoutManager(requireContext())
+        binding.searchView.apply {
+
+            // Remove search plate line
+            findViewById<View>(
+                androidx.appcompat.R.id.search_plate
+            )?.background = null
+
+            // Remove edit frame line
+            findViewById<View>(
+                androidx.appcompat.R.id.search_edit_frame
+            )?.background = null
+
+            // Remove submit area line
+            findViewById<View>(
+                androidx.appcompat.R.id.submit_area
+            )?.background = null
+
+            // Remove overall SearchView background
+            background = null
+        }
         setupToolbar(binding.toolbarLayout.toolbar, "Location", true)
         val mapFragment =
             SupportMapFragment.newInstance()
